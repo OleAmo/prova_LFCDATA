@@ -1,0 +1,251 @@
+---
+title: "Tables and variables"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Tables and variables}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(lfcdata)
+```
+
+## NFI database
+
+### Tables available
+
+Tables available to get data from can be consulted this way:
+
+```{r avail_table}
+nfidb <- nfi()
+nfi_avail_tables(nfidb)
+```
+
+### Table naming conventions
+
+Plots info:
+
+  - `plots`: main table containing the *static-in-time* information about plots.  
+  - `plots_nfi_X_dynamic_info`: tables containing the *dynamic-in-time* information about
+    plots for each nfi version
+
+Plot level results:
+
+  - `plot_nfi_X_[diamclass]_results`: tables with the data for the `X` nfi version.  
+      + `diamclass` indicates plot data broken down by diameter classes.  
+  - `plot_comp_nfiX_nfiY_[diamclass]_results`: tables with the data for nfi `X` and `Y`
+    versions comparisions.  
+      + `diamclass` indicates plot data broken down by diameter classes.
+
+Functional group broken down results:
+
+  - `[fg]_nfi_X_[diamclass]_results`: tables with the data for the `X` nfi version, broken
+    down by functional group value.  
+      + `diamclass` indicates data broken down by diameter classes.  
+      + `fg` can be `species`, `genus`, `simpspecies` (simplified list of species, with
+        some of them grouped), `dec` (**d**eciduous - **e**sclerophyll - **c**onifer) and
+        `bc` (**b**roadleaves - **c**onifer)  
+  - `[fg]_comp_nfiX_nfiY_[diamclass]_results`: tables with the data for nfi `X` and `Y`
+    versions comparisions, broken down by functional group value.  
+      + `diamclass` indicates data broken down by diameter classes.  
+      + `fg` can be `species`, `genus`, `simpspecies` (simplified list of species, with
+        some of them grouped), `dec` (**d**eciduous - **e**sclerophyll - **c**onifer) and
+        `bc` (**b**roadleaves - **c**onifer)  
+
+Other tables:
+
+  - `regeneration_nfi_X`: regeneration (small trees) tables for `X` nfi version. These
+    tables are **always broken down by species**.  
+  - `shrub_nfi_X_info`: Shrubs information tables for `X` nfi version. These
+    tables are **always broken down by species**.
+    
+
+Description of a table can be obtained with `nif_describe_table` function:
+
+```{r}
+nfi_describe_table(nfidb, 'plot_nfi_4_results')
+```
+
+
+### Variables info
+
+Information about variables can be consulted in console:
+
+```{r var_info}
+nfi_describe_var(nfidb, c('density', 'basal_area'))
+```
+
+#### Complete list of NFI variables
+
+```{r var_info_complete, echo = FALSE, comment = ''}
+nfi_get_data(nfidb, 'variables_thesaurus') %>%
+  dplyr::pull(var_id) %>%
+  unique() %>% 
+  sort() %>% {
+    for (var in .) {
+      nfi_describe_var(nfidb, var)
+      cat('----------------\n\n')
+    }
+  }
+```
+
+## Allometries database
+
+### Tables available
+
+Allometries database only offers one table, `allometries`. This table contains all the
+allometries and their information:
+
+```{r allometries}
+allomdb <- allometries()
+allometries_get_data(allomdb)
+```
+
+### Variables info
+
+Information about variables can be consulted in console:
+
+```{r}
+allometries_describe_var(allomdb, 'param_a')
+```
+
+It also can be used to describe in detail the independent and dependent variables:
+
+```{r}
+allometries_describe_var(allomdb, c('DR', 'DBH'))
+```
+
+
+## LiDAR database
+
+### Tables available
+
+The LiDAR database offers precalculated and aggregated data for administrative divisions
+and natural areas in Catalonia. Tables available can be consulted:
+
+```{r lidar_avail}
+lidardb <- lidar()
+lidar_avail_tables(lidardb)
+```
+
+And data retrieved:
+
+```{r get_data}
+lidar_get_data(lidardb, 'lidar_provinces')
+```
+
+Also, database offers low resolution raster tables (cell size of 400m x 400m), in the form
+of `stars` or `raster` objects:
+
+```{r lowres}
+lidar_get_lowres_raster(lidardb, c('REC', 'DBH'))
+```
+
+  > Raw data (20m x 20m rasters) can not be downloaded, but data can be consulted for
+    user provided polygons with the `lidar_clip_and_stats` function. See
+    `?lidar_clip_and_stats` for more information.
+
+
+### Variables info
+
+Information about the biophysic variables available in the LiDAR database can be
+consulted:
+
+```{r lidar_describe}
+lidar_describe_var(lidardb, 'AB')
+```
+
+#### Complete list of LiDAR variables
+
+```{r lidar_complete, echo = FALSE}
+lidar_describe_var(lidardb, c('AB', 'BAT', 'BF', 'CAT', 'DBH', 'HM', 'REC', 'VAE'))
+```
+
+## Forest Ecosystem Services (FES) for Catalunya database
+
+### Tables available
+
+FES database offers precalculated data for NFI plots as well as for static
+ecosystem service data. Available tables can be listed using `fes_avail_tables`:
+
+```{r fes_avail}
+fesdb <- fes()
+fes_avail_tables(fesdb)
+```
+
+And data can be retrieved with `fes_get_data`, in both, table or spatial (sf)
+formats:
+
+```{r fes_get_data}
+fes_get_data(fesdb, 'plot_nfi_4_results')
+fes_get_data(fesdb, 'plot_nfi_4_results', spatial = TRUE)
+```
+
+### Tables and variables information
+
+To know more about a table, we have `fes_describe_table`:
+
+```{r fes_describe_table}
+fes_describe_table(fesdb, 'plot_nfi_4_results')
+```
+
+If we want to know more about a variable, we will use `fes_describe_var`:
+
+```{r fes_describe_var}
+fes_describe_var(fesdb, 'mushrooms_production')
+```
+
+## Meteoland database
+
+### Raster data access
+
+Meteoland database is somewhat special, as there is no *get_data* method. All
+data in this database is spatial data, so we will use the
+`meteoland_get_lowres_raster` method to access the data:
+
+```{r meteoland db}
+meteolanddb <- meteoland()
+meteolanddb
+```
+
+For this to work, a character vector indicating a date in `YYYY-MM-DD` must be
+provided:
+
+```{r meteoland_get_raster, warning=FALSE}
+meteoland_get_lowres_raster(meteolanddb, date = as.character(Sys.Date() - 1))
+```
+
+## CatDrought database
+
+### Raster data access
+
+CatDrought database is similar to Meteoland database, in the sense that they
+don't have *get_data* method. Again, all data in this database is spatial data,
+so we can use the `catdrought_get_raster` method to access the data:
+
+```{r catdrought_db}
+catdroughtdb <- catdrought()
+catdroughtdb
+```
+
+We need to provide a date (character vector in `YYYY-MM-DD` format):
+
+```{r catdrought_get_raster}
+catdrought_get_raster(
+  catdroughtdb,
+  date = as.character(Sys.Date() - 1)
+)
+```
+

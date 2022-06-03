@@ -1,0 +1,77 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# lfcdata
+
+<!-- badges: start -->
+[![R build status](https://github.com/MalditoBarbudo/lfcdata/workflows/R-CMD-check/badge.svg)](https://github.com/MalditoBarbudo/lfcdata/actions)
+<!-- badges: end -->
+
+The goal of `lfcdata` R package is to provide access to the
+[Laboratori Forestal Català](http://laboratoriforestal.creaf.cat/) public databases.
+
+## Installation
+
+You can install the released version of lfcdata from
+[GitHub](https://github.com/MalditoBarbudo/lfcdata) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("MalditoBarbudo/lfcdata", ref = "master", build_vignettes = TRUE)
+```
+
+And the development version from
+[GitHub](https://github.com/MalditoBarbudo/lfcdata/tree/staging) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("MalditoBarbudo/lfcdata", ref = "staging", build_vignettes = TRUE)
+```
+
+## Databases
+
+A quick glance on the current availbale databases. See `vignette(package = 'lfcdata')` to
+get a more detailed explanation of each db as well as their tables and variables.
+
+### Spanish National Forest Inventory (NFI) data for Catalonia
+
+```{r nfi}
+library(lfcdata)
+library(dplyr)
+nfidb <- nfi()
+nfidb
+nfidb %>%
+  nfi_get_data('plot_nfi_4_results', spatial = TRUE) %>%
+  select(geometry, density, basal_area) %>%
+  plot()
+```
+
+### Allometries
+
+```{r allometries}
+allometriesdb <- allometries()
+allometriesdb
+allometriesdb %>%
+  allometries_get_data('allometries')
+```
+
+### LiDAR eco-physiological data for Catalonia
+
+```{r lidar}
+lidardb <- lidar()
+lidardb
+lidardb %>%
+  lidar_get_data('lidar_provinces', 'AB') %>%
+  plot()
+```

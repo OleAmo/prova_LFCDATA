@@ -1,0 +1,119 @@
+---
+title: "LiDAR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{LiDAR}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(lfcdata)
+library(stars)
+```
+
+
+## LiDAR database
+
+LiDAR database provides the eco-physiological variables data obtained by
+LiDAR flights from the [ICGC](https://www.icgc.cat/en/) in combination with the
+Spanish National Forest Inventory data.
+
+Access the database with the `lidar()` function:
+
+```{r lidar_data}
+lidardb <- lidar()
+lidardb
+```
+
+## Access precalculated and aggregated data
+
+Preacalculated data for different levels of administrative divisions are available with
+the `lidar_get_data` function. To see the available tables use `lidar_avail_tables`:
+
+```{r get_data}
+lidar_avail_tables(lidardb)
+lidar_get_data(lidardb, 'lidar_provinces')
+lidar_get_data(lidardb, 'lidar_enpes')
+```
+
+## Access the low resolution rasters (400x400m)
+
+Low resolution rasters can be retrieved with `lidar_get_lowres_raster`:
+
+```{r get_lowres_raster}
+lidar_avail_tables(lidardb)
+lidar_describe_var(lidardb, 'AB')
+ab_raster <- lidar_get_lowres_raster(lidardb, 'AB', 'stars')
+ab_raster
+```
+
+### Data formats
+
+Raster data can be retrieved in two formats, `stars` (default) and `RasterLayer`:
+
+```{r rasters}
+lidar_get_lowres_raster(lidardb, 'AB', 'stars') %>%
+  class()
+
+lidar_get_lowres_raster(lidardb, 'AB', 'raster') %>%
+  class()
+```
+
+More than one table can be accessed at the same time, resulting in a `RasterBrick` object
+or an `stars` object with attributes for each table:
+
+```{r bricks}
+lidar_get_lowres_raster(lidardb, c('AB', 'DBH'), 'stars')
+lidar_get_lowres_raster(lidardb, c('AB', 'DBH'), 'raster')
+```
+
+## Access the raw raster data
+
+Raw rasters (20x20m) are available for data extraction and calculations only, no for
+download
+
+
+### Extract point values
+
+Given a set of points (`sf` object), `lidar_point_value` extracts the raster values for
+the desired variables:
+
+```{r point_value}
+# get a set of points, we can use the national forest inventory data
+point_set <-
+  nfi()$get_data('plots', spatial = TRUE) %>%
+  dplyr::slice(1:25) %>%
+  dplyr::select(plot_id)
+# and extract the values
+lidardb %>%
+  lidar_point_value(point_set, 'plot_id', c('AB', 'DBH', 'REC'))
+```
+
+
+### Clip and stats
+
+Given a set of polygons (`sf` object), `lidar_clip_and_stats` calculate the raster stats
+for each polygon:
+
+```{r clip}
+# we get the provinces polygons
+polygon_set <-
+  lidardb %>%
+  lidar_get_data('lidar_municipalities', 'AB') %>%
+  dplyr::select(poly_id, geometry) %>%
+  dplyr::slice(1:2)
+# we calculate the stats
+lidardb %>%
+  lidar_clip_and_stats(polygon_set, 'poly_id', c('AB', 'DBH', 'REC'))
+```
+
