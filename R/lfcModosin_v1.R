@@ -1,5 +1,4 @@
 
-
 modosin <- function() {
   lfcMODOSIN$new()
 }
@@ -40,10 +39,26 @@ lfcMODOSIN <- R6::R6Class(
     },
     rest = function() {
       res <- self$val_1 - self$val_2
-      return(res)
+      cat(
+       "RESTA = " %+% crayon::yellow$bold(paste(self$val_1))%+% " - " %+%
+          crayon::yellow$bold(paste(self$val_2)) %+%
+          "\n")
+      if (res>=0) {
+        cat("RESULTADO = " %+% crayon::green$bold(paste(res)))
+      } else  {
+        cat("RESULTADO = " %+% crayon::red$bold(paste(res)))
+      }
+
       }
   )
 )
+
+check_values = function (a,b){
+  if(!is.numeric(a) | !is.numeric(b)){
+    stop("valores no numéricos")
+  }
+
+}
 
 
 
