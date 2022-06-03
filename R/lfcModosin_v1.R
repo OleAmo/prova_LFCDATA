@@ -37,7 +37,11 @@ lfcMODOSIN <- R6::R6Class(
         cat("RESULTADO = " %+% crayon::red$bold(paste(res)))
       }
 
-    }
+    },
+    rest = function() {
+      res <- self$val_1 - self$val_2
+      return(res)
+      }
   )
 )
 
