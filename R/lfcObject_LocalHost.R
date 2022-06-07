@@ -5,7 +5,7 @@ lfcObject_LH <- R6::R6Class(
      private$pool_conn <- private$pool_conn_create()
     },
   get_data = function(table_name){
-    private$data_cache[[glue::glue("{table_name}")]] %||% {
+    private$data_cache[[glue::glue("{table_name}_FALSE")]] %||% {
 
       message('Querying table from LFC database, this can take a while...')
       query_data <- try(
@@ -16,7 +16,7 @@ lfcObject_LH <- R6::R6Class(
       if (inherits(query_data, "try-error")) {
         stop("Can not connect to the database:\n", query_data[1])
       } else {
-        private$data_cache[[glue::glue("{table_name}")]] <- query_data
+        private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data
         return(query_data)
       }
     }
