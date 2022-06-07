@@ -34,6 +34,19 @@ lfcMODOSIN <- R6::R6Class(
       # eliminar de los resultados las tablas que el usuario no visualizará
       res_2 <- res_1[!res_1 %in% no_tables]
       return(res_2)
+    },
+    describe_table = function(tables){
+      tables_dict <- nfi_table_dictionary()
+      variables_thes <- suppressMessages(self$get_data('variables_thesaurus'))
+
+
+      tables %>%
+        purrr::map(
+          modosin_describe_table_cat,
+          tables_dict = tables_dict, variables_thes = variables_thes
+        )
+
+
     }
 
   ),
