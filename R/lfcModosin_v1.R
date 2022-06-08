@@ -39,12 +39,12 @@ lfcMODOSIN <- R6::R6Class(
       tables_dict <- nfi_table_dictionary()
       variables_thes <- suppressMessages(self$get_data('variables_thesaurus'))
 
-
       tables %>%
         purrr::map(
           modosin_describe_table_cat,
           tables_dict = tables_dict, variables_thes = variables_thes
         )
+      return(invisible(self))
 
 
     }
