@@ -9,24 +9,33 @@ lfcMODOSIN <- R6::R6Class(
   inherit = lfcObject_LH,
   cloneable = FALSE,
 
+
   public = list(
 
-    # ............ AÑADIR ...........
-    # ...............................
+    # ............ TRABAJO PENDIENTE ...........
+    # ..........................................
     #      .) GET_DATA
-    #               .) DATE SELECCION:
-    #               .) solo DATA_DAY de la fecha
-    #      .) DESCRIVE_TABLE
-    #      .) DESCRIVE_VALUE
+    #      .) INCLUIR la FECHA en la función
+
 
     # ... GET_DATA....
     # ................
-
     get_data = function(table_name){
+
       res <- private$data_cache[[glue::glue("{table_name}")]] %||%
         { super$get_data(table_name) }
       return(res)
     },
+    # date = NULL,
+    # get_data = function(table_name,date){
+    #   self$date <- date
+    #   res <- private$data_cache[[glue::glue("{table_name}")]] %||%
+    #     { super$get_data(table_name) %>%
+    #         filter(date == self$date)
+    #
+    #       }
+    #   return(res)
+    # },
 
     # ... AVAIL TABLES ...
     # ....................
