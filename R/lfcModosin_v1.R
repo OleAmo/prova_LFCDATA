@@ -20,10 +20,17 @@ lfcMODOSIN <- R6::R6Class(
 
     # ... GET_DATA....
     # ................
-    get_data = function(table_name){
+
+    get_data = function(table_name,date_1){
+
+      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
 
       res <- private$data_cache[[glue::glue("{table_name}")]] %||%
-        { super$get_data(table_name) }
+        { super$get_data(table_name) %>%
+            data.frame() %>%
+              filter(date == date_2)
+
+            }
       return(res)
     },
     # date = NULL,
