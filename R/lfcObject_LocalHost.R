@@ -1,10 +1,21 @@
+
+
 lfcObject_LH <- R6::R6Class(
+
   classname = 'lfcObject_LH',
+
   public = list(
      initialize = function(){
      private$pool_conn <- private$pool_conn_create()
     },
-  get_data = function(table_name){
+
+  # ................... GET_DATA R ...................
+  # .................................................
+
+  #      .) La Consulta SQL => TODAS las FECHAS
+  #      .) En R = seleccion de fecha
+
+  get_data_R = function(table_name){
     private$data_cache[[glue::glue("{table_name}_FALSE")]] %||% {
 
       message('Querying table from LFC database, this can take a while...')
@@ -19,6 +30,38 @@ lfcObject_LH <- R6::R6Class(
         private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data
         return(query_data)
       }
+    }
+  },
+
+  # ................. GET_DATA SQL ..................
+  # .................................................
+
+  #      .) La Consulta SQL => SELECCION por FECHA
+  #      .)
+
+
+  get_data_SQL = function(table_name,date){
+    private$data_cache[[glue::glue("{table_name}_FALSE")]] %||% {
+
+      message('Querying table from LFC database, this can take a while...')
+
+      date_2 <- as.Date(date, format = "%Y-%m-%d")
+
+      sql <- glue:::glue("
+        SELECT * FROM public.{table_name}
+        WHERE date = '{date_2}' ")
+
+      query_data <- try(pool::dbGetQuery(private$pool_conn,sql))
+
+      message('Done')
+
+      if (inherits(query_data, "try-error")) {
+        stop("Can not connect to the database:\n", query_data[1])
+      } else {
+        private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data
+        return(query_data)
+      }
+
     }
   }
 

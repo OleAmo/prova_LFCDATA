@@ -12,37 +12,55 @@ lfcMODOSIN <- R6::R6Class(
 
   public = list(
 
-    # ............ TRABAJO PENDIENTE ...........
-    # ..........................................
-    #      .) GET_DATA
-    #      .) INCLUIR la FECHA en la función
+    # ................... GET_DATA R ...................
+    # .................................................
+
+    #      .) La Consulta SQL => TODAS las FECHAS
+    #      .) En R = seleccion de fecha
+
+    get_data_by_R = function(table_name,date_1){
 
 
-    # ... GET_DATA....
-    # ................
+      t1 <- Sys.time()
 
-    get_data = function(table_name,date_1){
-
-      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
-
-      res <- private$data_cache[[glue::glue("{table_name}")]] %||%
-        { super$get_data(table_name) %>%
+      res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
+        {
+          super$get_data_R(table_name) %>%
             data.frame() %>%
-              filter(date == date_2)
-
-            }
+               dplyr::filter(date == date_1) %>%
+                head(5)
+        }
+      t2 <- Sys.time()
+      dif <- (t2 - t1)
+      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
+      cat ("\n")
       return(res)
     },
-    # date = NULL,
-    # get_data = function(table_name,date){
-    #   self$date <- date
-    #   res <- private$data_cache[[glue::glue("{table_name}")]] %||%
-    #     { super$get_data(table_name) %>%
-    #         filter(date == self$date)
-    #
-    #       }
-    #   return(res)
-    # },
+
+    # ................. GET_DATA SQL ..................
+    # .................................................
+
+    #      .) La Consulta SQL => SELECCION por FECHA
+    #      .) En R = lo pasamos a dataframe
+
+    get_data_by_SQL = function(table_name,date_1){
+
+      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
+      t1 <- Sys.time()
+
+      res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
+        {
+          super$get_data_SQL(table_name,date_2) %>%
+            data.frame() %>%
+            head(5)
+        }
+      t2 <- Sys.time()
+      dif <- (t2 - t1)
+      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
+      cat ("\n")
+      return(res)
+    },
+
 
     # ... AVAIL TABLES ...
     # ....................
@@ -64,7 +82,7 @@ lfcMODOSIN <- R6::R6Class(
 
     describe_table = function(tables){
       tables_dict <- nfi_table_dictionary()
-      variables_thes <- suppressMessages(self$get_data('variables_thesaurus'))
+      variables_thes <- suppressMessages(self$get_data_R('variables_thesaurus'))
 
       tables %>%
         purrr::map(
@@ -79,8 +97,8 @@ lfcMODOSIN <- R6::R6Class(
 
     describe_var = function(variables) {
 
-      variables_thes <- suppressMessages(self$get_data('variables_thesaurus'))
-      numerical_thes <- suppressMessages(self$get_data('variables_numerical'))
+      variables_thes <- suppressMessages(self$get_data_R('variables_thesaurus'))
+      numerical_thes <- suppressMessages(self$get_data_R('variables_numerical'))
 
       variables %>%
         purrr::map(
