@@ -23,13 +23,13 @@ lfcMODOSIN <- R6::R6Class(
 
       t1 <- Sys.time()
 
-      res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
+      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data_R(table_name) %>%
             data.frame() %>%
                dplyr::filter(date == date_1) %>%
                 head(5)
-          private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data_spatial
+          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
       t2 <- Sys.time()
