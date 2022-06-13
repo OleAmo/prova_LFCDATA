@@ -50,11 +50,13 @@ lfcMODOSIN <- R6::R6Class(
       date_2 <- as.Date(date_1, format = "%Y-%m-%d")
       t1 <- Sys.time()
 
-      res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
+      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
-          super$get_data_SQL(table_name,date_2) %>%
+          query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
             data.frame() %>%
             head(5)
+          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
+          query_data_spatial
         }
       t2 <- Sys.time()
       dif <- (t2 - t1)
