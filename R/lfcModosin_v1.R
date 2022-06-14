@@ -24,7 +24,7 @@ lfcMODOSIN <- R6::R6Class(
       t1 <- Sys.time()
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
-          query_data_spatial <- super$get_data_R(table_name) %>%
+          query_data_spatial <- super$get_data_R_tim(table_name) %>%
             data.frame() %>%
             dplyr::filter(date == date_1) %>%
             head(5)
@@ -34,9 +34,6 @@ lfcMODOSIN <- R6::R6Class(
       t2 <- Sys.time()
       dif <- (t2 - t1)
       return(dif)
-      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
-      cat ("\n")
-      #return(res)
 
     },
 
@@ -54,7 +51,7 @@ lfcMODOSIN <- R6::R6Class(
       t1 <- Sys.time()
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
-          query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
+          query_data_spatial <- super$get_data_SQL_tim(table_name,date_2) %>%
             data.frame() %>%
             head(5)
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
@@ -63,9 +60,6 @@ lfcMODOSIN <- R6::R6Class(
       t2 <- Sys.time()
       dif <- (t2 - t1)
       return(dif)
-      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
-      cat ("\n")
-      # return(res)
 
     },
 

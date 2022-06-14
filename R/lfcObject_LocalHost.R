@@ -9,6 +9,56 @@ lfcObject_LH <- R6::R6Class(
      private$pool_conn <- private$pool_conn_create()
     },
 
+  # ............... TIMING GET_DATA R ................
+  # ..................................................
+
+  #      .) Es igual al GET_DATA_R, pero:
+  #            .) ANULO  MESSAGES
+  #            .) ANULO  if (inherits)
+
+  get_data_R_tim = function(table_name){
+    private$data_cache[[glue::glue("{table_name}_FALSE")]] %||% {
+
+      query_data <- try(
+        dplyr::tbl(private$pool_conn, table_name) %>% dplyr::collect()
+      )
+
+      private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data
+        return(query_data)
+
+    }
+  },
+
+  # ............... TIMING GET_DATA SQL ................
+  # ..................................................
+
+  #      .) Es igual al GET_DATA_SQL, pero:
+  #            .) ANULO  MESSAGES
+  #            .) ANULO  if (inherits)
+
+
+  get_data_SQL_tim = function(table_name,date){
+    private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] %||% {
+
+      date_2 <- as.Date(date, format = "%Y-%m-%d")
+
+      sql <- glue:::glue("
+        SELECT * FROM public.{table_name}
+        WHERE date = '{date_2}' ")
+
+      query_data <- try(pool::dbGetQuery(private$pool_conn,sql))
+
+      private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] <- query_data
+        return(query_data)
+
+
+    }
+  },
+
+
+
+
+
   # ................... GET_DATA R ...................
   # .................................................
 
@@ -18,11 +68,11 @@ lfcObject_LH <- R6::R6Class(
   get_data_R = function(table_name){
     private$data_cache[[glue::glue("{table_name}_FALSE")]] %||% {
 
-      # message('Querying table from LFC database, this can take a while...')
+      message('Querying table from LFC database, this can take a while...')
       query_data <- try(
         dplyr::tbl(private$pool_conn, table_name) %>% dplyr::collect()
       )
-      # message('Done')
+      message('Done')
 
       if (inherits(query_data, "try-error")) {
         stop("Can not connect to the database:\n", query_data[1])
@@ -43,7 +93,7 @@ lfcObject_LH <- R6::R6Class(
   get_data_SQL = function(table_name,date){
     private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] %||% {
 
-      # message('Querying table from LFC database, this can take a while...')
+      message('Querying table from LFC database, this can take a while...')
       date_2 <- as.Date(date, format = "%Y-%m-%d")
 
       sql <- glue:::glue("
@@ -52,7 +102,7 @@ lfcObject_LH <- R6::R6Class(
 
       query_data <- try(pool::dbGetQuery(private$pool_conn,sql))
 
-      # message('Done')
+      message('Done')
 
       if (inherits(query_data, "try-error")) {
         stop("Can not connect to the database:\n", query_data[1])
