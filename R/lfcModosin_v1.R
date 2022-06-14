@@ -12,8 +12,67 @@ lfcMODOSIN <- R6::R6Class(
 
   public = list(
 
+    # ............... TIMING GET_DATA R ................
+    # ..................................................
+
+    #      .) Es igual al GET_DATA_R, pero:
+    #            .) ANULO  Return (RES)
+    #            .) ACTIVO Return (DIF)
+
+    get_data_TIMING_R = function(table_name,date_1){
+
+      t1 <- Sys.time()
+      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
+        {
+          query_data_spatial <- super$get_data_R(table_name) %>%
+            data.frame() %>%
+            dplyr::filter(date == date_1) %>%
+            head(5)
+          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
+          query_data_spatial
+        }
+      t2 <- Sys.time()
+      dif <- (t2 - t1)
+      return(dif)
+      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
+      cat ("\n")
+      #return(res)
+
+    },
+
+    # ............... TIMING GET_DATA SQL ................
+    # ..................................................
+
+    #      .) Es igual al GET_DATA_SQL, pero:
+    #            .) ANULO  Return (RES)
+    #            .) ACTIVO Return (DIF)
+
+
+    get_data_TIMING_SQL = function(table_name,date_1){
+
+      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
+      t1 <- Sys.time()
+      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
+        {
+          query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
+            data.frame() %>%
+            head(5)
+          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
+          query_data_spatial
+        }
+      t2 <- Sys.time()
+      dif <- (t2 - t1)
+      return(dif)
+      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
+      cat ("\n")
+      # return(res)
+
+    },
+
+
+
     # ................... GET_DATA R ...................
-    # .................................................
+    # ..................................................
 
     #      .) La Consulta SQL => TODAS las FECHAS
     #      .) En R = seleccion de fecha
@@ -32,10 +91,10 @@ lfcMODOSIN <- R6::R6Class(
         }
       t2 <- Sys.time()
       dif <- (t2 - t1)
-      return(dif)
+
       cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
       cat ("\n")
-      #return(res)
+      return(res)
 
     },
 
@@ -59,10 +118,10 @@ lfcMODOSIN <- R6::R6Class(
         }
       t2 <- Sys.time()
       dif <- (t2 - t1)
-      return(dif)
+
       cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
       cat ("\n")
-      # return(res)
+      return(res)
 
     },
 
