@@ -5,6 +5,10 @@ test_that("class object creation works", {
   expect_true(rlang::is_function(modosin()$get_data_TIMING_SQL))
   expect_true(rlang::is_function(modosin()$get_data_by_R))
   expect_true(rlang::is_function(modosin()$get_data_by_SQL))
+  expect_true(rlang::is_function(modosin()$get_data_SQL))
+  expect_true(rlang::is_function(modosin()$get_data_R))
+  expect_true(rlang::is_function(modosin()$get_data_SQL_tim))
+  expect_true(rlang::is_function(modosin()$get_data_R_tim))
   expect_true(rlang::is_function(modosin()$avail_tables))
   expect_true(rlang::is_function(modosin()$describe_table))
   expect_true(rlang::is_function(modosin()$describe_var))
@@ -14,6 +18,38 @@ test_that("class object creation works", {
 # nfidb to avoid calling the db so often
 # nfidb <- nfi()
 mod <- modosin()
+
+
+test_that("get_data method works", {
+
+  expect_s3_class(mod$get_data_R_tim('data_day'), 'data.frame')
+  expect_s3_class(mod$get_data_SQL_tim('data_day','2021-10-31'), 'data.frame')
+  expect_s3_class(mod$get_data_R('data_day'), 'data.frame')
+  expect_s3_class(mod$get_data_SQL('data_day','2021-10-31'), 'data.frame')
+  expect_s3_class(mod$get_data_TIMING_R('data_day','2021-10-31'), 'difftime')
+  expect_s3_class(mod$get_data_TIMING_SQL('data_day','2021-10-31'), 'difftime')
+  expect_s3_class(mod$get_data_by_R('data_day','2021-10-31'), 'data.frame')
+  expect_s3_class(mod$get_data_by_SQL('data_day','2021-10-31'), 'data.frame')
+
+  # errors
+
+  }
+)
+
+
+
+test_that("publics method works", {
+
+  expect_equal(2 * 2, 4)
+  expect_error(1 / "a", "argumento no-numérico para operador binario")
+
+  # expect_s3_class(mod$avail_tables('data_day'), "data.frame")
+  # expect_s3_class(mod$describe_table('data_day'), "data.frame")
+  # expect_s3_class(mod$describe_var('data_day'), "data.frame")
+
+}
+)
+
 #
 # test_that("get method works", {
 #   skip_on_cran()
