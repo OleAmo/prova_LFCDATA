@@ -26,13 +26,32 @@ test_that("get_data method works", {
   expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
   expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
 
+  # errors
+  # expect_error(
+  #   mod$get_data_R("dd"),
+  #   "Failed to prepare query"
+  # )
+
 }
 )
 
-test_that("public method works", {
+test_that("avail_table method works", {
 
+  expect_is(mod$avail_tables(),'character')
+}
+)
 
-  expect_equal(2 * 2, 4)
+test_that("describe_table method works", {
+
+  expect_is(mod$describe_table("prova_plot_nfi2_genus"), c('lfcMODOSIN'))
+
+}
+)
+
+test_that("describe_var method works", {
+
+  expect_is(mod$describe_var("REW"),c('lfcMODOSIN'))
+
 
 }
 )
