@@ -14,7 +14,32 @@ test_that("class object creation works", {
 # nfidb to avoid calling the db so often
 # nfidb <- nfi()
 mod <- modosin()
-#
+
+test_that("get_data method works", {
+
+  expect_s3_class(mod$get_data_R_tim('data_day'),'data.frame')
+  expect_s3_class(mod$get_data_SQL_tim('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_R('data_day'),'data.frame')
+  expect_s3_class(mod$get_data_SQL('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_TIMING_R('data_day','2021-5-17'),'difftime')
+  expect_s3_class(mod$get_data_TIMING_SQL('data_day','2021-5-17'),'difftime')
+  expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
+
+}
+)
+
+test_that("public method works", {
+
+
+  expect_equal(2 * 2, 4)
+
+}
+)
+
+
+
+
 # test_that("get method works", {
 #   skip_on_cran()
 #   skip_on_travis()
