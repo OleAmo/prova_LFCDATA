@@ -170,6 +170,8 @@ check_length_for <- function(object, expected_length, arg_name = 'object') {
 }
 
 # check if in a character vector
+
+
 check_if_in_for <- function(object, in_template) {
   if (any(!object %in% in_template)) {
     not_complying <- which(!object %in% in_template)

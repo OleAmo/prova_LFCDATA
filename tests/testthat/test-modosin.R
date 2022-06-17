@@ -39,11 +39,12 @@ test_that("get_data method works", {
   }
 )
 
-# test_that("avail_table method works", {
-#
-#   expect_is(mod$avail_tables(),'character')
-# }
-# )
+test_that("avail_table method works", {
+
+  expect_type(mod$avail_tables(),'character')
+  expect_true("variables_thesaurus" %in% mod$avail_tables())
+}
+)
 
 
 test_that("describe_table method works", {
@@ -51,7 +52,8 @@ test_that("describe_table method works", {
   expect_is(mod$describe_table("prova_plot_nfi2_genus"), c('lfcMODOSIN'))
   expect_output(mod$describe_table("prova_plot_nfi2_genus"))
   expect_output(mod$describe_table(c("prova_plot_nfi2_genus","prova_plots_dynamic_nfi2")))
-  # expect_error(mod$describe_table(c("prova_plot_nfi2_genus","kkkk")), 'not found')
+  expect_error(mod$describe_table(c("prova_plot_nfi2_genus", "prova_ejemplo")), 'not found')
+  expect_error(mod$describe_table('base_datos'), 'not found')
 
 }
 )
