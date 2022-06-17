@@ -19,6 +19,7 @@ test_that("class object creation works", {
 # nfidb <- nfi()
 mod <- modosin()
 
+<<<<<<< HEAD
 
 test_that("get_data method works", {
 
@@ -43,12 +44,31 @@ test_that("publics method works", {
   # expect_s3_class(mod$avail_tables('data_day'), "data.frame")
   # expect_s3_class(mod$describe_table('data_day'), "data.frame")
   # expect_s3_class(mod$describe_var('data_day'), "data.frame")
+=======
+test_that("get_data method works", {
+
+  expect_s3_class(mod$get_data_R_tim('data_day'),'data.frame')
+  expect_s3_class(mod$get_data_SQL_tim('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_R('data_day'),'data.frame')
+  expect_s3_class(mod$get_data_SQL('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_TIMING_R('data_day','2021-5-17'),'difftime')
+  expect_s3_class(mod$get_data_TIMING_SQL('data_day','2021-5-17'),'difftime')
+  expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
+  expect_s3_class(mod$get_data_by_R('data_day','2021-5-17'),'data.frame')
+
+  # errors
+  # expect_error(
+  #   mod$get_data_R("dd"),
+  #   "Failed to prepare query"
+  # )
+>>>>>>> da2db48e4e4bb109c083c3db2da29bd7ae307ac8
 
 }
 )
 
 
 
+<<<<<<< HEAD
 
 # ..........................................................
 # ................... ME HE QUEDADO EN .....................
@@ -70,7 +90,35 @@ test_that("publics method works", {
 
 
 
+=======
+# test_that("avail_table method works", {
+>>>>>>> da2db48e4e4bb109c083c3db2da29bd7ae307ac8
 #
+#   expect_is(mod$avail_tables(),'character')
+# }
+# )
+
+test_that("describe_table method works", {
+
+  expect_is(mod$describe_table("prova_plot_nfi2_genus"), c('lfcMODOSIN'))
+  expect_output(mod$describe_table("prova_plot_nfi2_genus"))
+  expect_output(mod$describe_table(c("prova_plot_nfi2_genus","prova_plots_dynamic_nfi2")))
+  # expect_error(mod$describe_table(c("prova_plot_nfi2_genus","kkkk")), 'not found')
+
+}
+)
+
+# test_that("describe_var method works", {
+#
+#   expect_is(mod$describe_var("REW"),c('lfcMODOSIN'))
+#
+#
+# }
+# )
+
+
+
+
 # test_that("get method works", {
 #   skip_on_cran()
 #   skip_on_travis()
