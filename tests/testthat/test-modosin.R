@@ -31,9 +31,19 @@ test_that("get_data method works", {
   expect_s3_class(mod$get_data_by_SQL('data_day','2021-10-31'),'data.frame')
 
   # errors
+  # expect_error(
+  #   mod$get_data_R("dd"),
+  #   "Failed to prepare query"
+  # )
 
   }
 )
+
+# test_that("avail_table method works", {
+#
+#   expect_is(mod$avail_tables(),'character')
+# }
+# )
 
 
 test_that("describe_table method works", {
@@ -53,7 +63,6 @@ test_that("describe_table method works", {
 #
 # }
 # )
-
 
 
 
