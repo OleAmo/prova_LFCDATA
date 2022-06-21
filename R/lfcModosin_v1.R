@@ -138,7 +138,6 @@ lfcMODOSIN <- R6::R6Class(
     describe_table = function(tables){
 
       check_args_for_LH(character = list(tables = tables))
-
       check_if_in_for(tables, self$avail_tables())
 
       tables_dict <- nfi_table_dictionary()

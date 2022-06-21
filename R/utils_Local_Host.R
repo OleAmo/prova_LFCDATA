@@ -4,16 +4,27 @@
 # ...........................................
 
 
+#        .) Comprueba si es CIERTO lo que informamos
+#        .) Su no es así NOS DA ERROR
+
+#        .) Ejemplo = CHECK_ARGS( character = table )
+#              .) Le estamos diciendo que los ARGUMENTOS tienen que se CHARACTER
+#              .) Intentará BUSCAR ERROR
+#              .) Por eso el PURRR::MAP esta dirigida a BUSCAR NO CHARACTES
+#                    .) Si ALGUNO ÉS NO CHARACTERS hara un STOP a TODO y saldà un MENSAJE
+#                    .) Si es TODO CHARACTERS no harà NADA y continua lo que estava haciendo
+
+
 check_args_for_LH <- function(
     character = NULL, numerical = NULL, logical = NULL, na = NULL,
     sf = NULL, points = NULL, polygons = NULL, date = NULL
 ) {
 
   # character
-  if (!rlang::is_null(character)) {
+  if (!rlang::is_null(character)) {             # Si CHARACTER es NO NULL
     not_complying <- character %>%
-      purrr::map(rlang::is_character) %>%
-      purrr::keep(.p = ~!isTRUE(.x)) %>%
+      purrr::map(rlang::is_character) %>%       # Detecta los CHARACTERS
+      purrr::keep(.p = ~!isTRUE(.x)) %>%        # Se queda con los NO CHARACTERS (num, boolean, NA)
       names()
 
     if (length(not_complying) > 0) {
@@ -25,10 +36,10 @@ check_args_for_LH <- function(
   }
 
   # numerical
-  if (!rlang::is_null(numerical)) {
+  if (!rlang::is_null(numerical)) {             # Si CHARACTER es NO NUMERICAL
     not_complying <- numerical %>%
-      purrr::map(rlang::is_bare_numeric) %>%
-      purrr::keep(.p = ~!isTRUE(.x)) %>%
+      purrr::map(rlang::is_bare_numeric) %>%    # Detecta los NUMERIC
+      purrr::keep(.p = ~!isTRUE(.x)) %>%        # Se queda con los NO NUMERIC (charact, boolean, NA)
       names()
     if (length(not_complying) > 0) {
       error_message <- glue::glue(
@@ -67,10 +78,7 @@ check_args_for_LH <- function(
     }
   }
 
-
-
-
-  }
+}
 
 
 
