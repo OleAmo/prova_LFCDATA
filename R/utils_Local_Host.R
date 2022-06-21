@@ -1,4 +1,80 @@
 
+
+# ........... CHECK_ARGS_FOR ...............
+# ...........................................
+
+
+check_args_for_LH <- function(
+    character = NULL, numerical = NULL, logical = NULL, na = NULL,
+    sf = NULL, points = NULL, polygons = NULL, date = NULL
+) {
+
+  # character
+  if (!rlang::is_null(character)) {
+    not_complying <- character %>%
+      purrr::map(rlang::is_character) %>%
+      purrr::keep(.p = ~!isTRUE(.x)) %>%
+      names()
+
+    if (length(not_complying) > 0) {
+      error_message <- glue::glue(
+        "Argument {glue::glue_collapse(not_complying)} is not character\n"
+      )
+      stop(error_message)
+    }
+  }
+
+  # numerical
+  if (!rlang::is_null(numerical)) {
+    not_complying <- numerical %>%
+      purrr::map(rlang::is_bare_numeric) %>%
+      purrr::keep(.p = ~!isTRUE(.x)) %>%
+      names()
+    if (length(not_complying) > 0) {
+      error_message <- glue::glue(
+        "One or more variables are not numeric\n"
+      )
+      stop(error_message)
+    }
+  }
+
+  # dates
+  if (!rlang::is_null(date)) {
+    not_complying <- date %>%
+      purrr::map(
+        .f = function(x) {
+          date_check <- try(as.Date(x))
+          if (is(date_check, 'try-error')) {
+            return(FALSE)
+          }
+          # if x is a vector, with valid and invalid dates as characters,
+          # as.Date is going to return NAs for invalid ones, check for that too:
+          if (any(is.na(date_check))) {
+            return(FALSE)
+          }
+          return(TRUE)
+        }
+      ) %>%
+      purrr::keep(.p = ~ !isTRUE(.x)) %>%
+      names()
+
+    if (length(not_complying) > 0) {
+      error_message <- glue::glue(
+        "Argument {glue::glue_collapse(not_complying)} ",
+        "cannot be converted to date"
+      )
+      stop(error_message)
+    }
+  }
+
+
+
+
+  }
+
+
+
+
 # ........... DESCRIBRE TABLE ...............
 # ...........................................
 

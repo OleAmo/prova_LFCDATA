@@ -70,6 +70,7 @@ lfcMODOSIN <- R6::R6Class(
     #      .) En R = seleccion de fecha
 
     get_data_by_R = function(table_name,date_1){
+
       date_1 <- as.Date(date_1, format = "%Y-%m-%d")
       t1 <- Sys.time()
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
@@ -135,6 +136,8 @@ lfcMODOSIN <- R6::R6Class(
     # ......................
 
     describe_table = function(tables){
+
+      check_args_for_LH(character = list(tables = tables))
 
       check_if_in_for(tables, self$avail_tables())
 
