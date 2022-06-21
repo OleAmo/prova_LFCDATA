@@ -26,8 +26,7 @@ lfcMODOSIN <- R6::R6Class(
         {
           query_data_spatial <- super$get_data_R_tim(table_name) %>%
             data.frame() %>%
-            dplyr::filter(date == date_1) %>%
-            head(5)
+            dplyr::filter(date == date_1)
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
@@ -52,8 +51,7 @@ lfcMODOSIN <- R6::R6Class(
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data_SQL_tim(table_name,date_2) %>%
-            data.frame() %>%
-            head(5)
+            data.frame()
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
@@ -78,8 +76,7 @@ lfcMODOSIN <- R6::R6Class(
         {
           query_data_spatial <- super$get_data_R(table_name) %>%
             data.frame() %>%
-               dplyr::filter(date == date_1) %>%
-                head(5)
+               dplyr::filter(date == date_1)
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
@@ -105,8 +102,7 @@ lfcMODOSIN <- R6::R6Class(
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
-            data.frame() %>%
-            head(5)
+            data.frame()
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
