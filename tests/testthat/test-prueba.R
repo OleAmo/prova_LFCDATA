@@ -1,15 +1,8 @@
 
-ejemplo <- function(a,b){
-  res <- a+b
-  return(res)
-}
 
-# ejemplo(7,5)
+test_that("thingy exists", {
 
-test_that("foofy() does this", {
-  # skip_if(today_is_a_monday())
+  thingy <- "XXX"
+  expect_true(exists(thingy))
 
-  dat <- data.frame(x = c("a", "b", "c"), y = c(1, 2, 3))
-
-  expect_equal(dat, dat)
 })

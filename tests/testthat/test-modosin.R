@@ -31,10 +31,19 @@ test_that("get_data method works", {
   expect_s3_class(mod$get_data_by_SQL('data_day','2021-10-31'),'data.frame')
 
   # errors
-  # expect_error(
-  #   mod$get_data_R("dd"),
-  #   "Failed to prepare query"
-  # )
+  expect_error(
+    mod$get_data_by_R('data_day',FALSE), Message = "do not know how to convert"
+  )
+  expect_error(
+    mod$get_data_by_R('data_day',21), Message = "'origin' must be supplied"
+  )
+  expect_error(
+    mod$get_data_by_R(FALSE,21), Message = "'origin' must be supplied"
+  )
+  expect_error(
+    mod$get_data_by_R('non_existent_table','2021-10-31'), Message = "Can not connect to the database"
+  )
+
 
   }
 )
@@ -58,13 +67,13 @@ test_that("describe_table method works", {
 }
 )
 
-# test_that("describe_var method works", {
-#
-#   expect_is(mod$describe_var("REW"),c('lfcMODOSIN'))
-#
-#
-# }
-# )
+test_that("describe_var method works", {
+
+  expect_is(mod$describe_var("REW"),c('lfcMODOSIN'))
+
+
+}
+)
 
 
 
