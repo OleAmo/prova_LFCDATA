@@ -155,6 +155,7 @@ lfcMODOSIN <- R6::R6Class(
     # ....................
 
     describe_var = function(variables) {
+      check_args_for_LH(character = list(variables = variables))
 
       variables_thes <- suppressMessages(self$get_data_R('variables_thesaurus'))
       numerical_thes <- suppressMessages(self$get_data_R('variables_numerical'))

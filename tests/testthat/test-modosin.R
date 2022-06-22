@@ -21,6 +21,9 @@ mod <- modosin()
 
 test_that("get_data method works", {
 
+  skip_on_cran()
+  skip_on_travis()
+
   expect_s3_class(mod$get_data_R_tim('data_day'),'data.frame')
   expect_s3_class(mod$get_data_SQL_tim('data_day','2021-10-31'),'data.frame')
   expect_s3_class(mod$get_data_R('data_day'),'data.frame')
@@ -49,31 +52,64 @@ test_that("get_data method works", {
 )
 
 test_that("avail_table method works", {
+  skip_on_cran()
+  skip_on_travis()
 
+  expect_is(mod$avail_tables(), c('character'))
   expect_type(mod$avail_tables(),'character')
   expect_true("variables_thesaurus" %in% mod$avail_tables())
+
+
 }
 )
 
 
 test_that("describe_table method works", {
+  skip_on_cran()
+  skip_on_travis()
 
   expect_is(mod$describe_table("prova_plot_nfi2_genus"), c('lfcMODOSIN'))
   expect_output(mod$describe_table("prova_plot_nfi2_genus"))
   expect_output(mod$describe_table(c("prova_plot_nfi2_genus","prova_plots_dynamic_nfi2")))
   expect_error(mod$describe_table(c("prova_plot_nfi2_genus", "prova_ejemplo")), 'not found')
-  expect_error(mod$describe_table('base_datos'), 'not found')
+  expect_error(mod$describe_table('base_datos'), 'base_datos not found')
+  expect_error(mod$describe_table(NA), 'Argument tables is not character')
+  expect_error(mod$describe_table(25), 'Argument tables is not character')
+  expect_error(mod$describe_table(), "el argumento \"tables\" está ausente, sin valor por omisión")
+
 
 }
 )
 
 test_that("describe_var method works", {
+  skip_on_cran()
+  skip_on_travis()
 
   expect_is(mod$describe_var("REW"),c('lfcMODOSIN'))
+  expect_output(mod$describe_var("LAI"))
+  expect_output(mod$describe_var(c("REW","Precipitaion","LAI")))
+
+  # errors
+    expect_error(
+      mod$describe_var(NA), Message = "Argument variables is not character"
+    )
+    expect_error(
+      mod$describe_var(21), Message = "Argument variables is not character"
+    )
+    expect_error(
+      mod$describe_var(), Message = 'argument "variables" is missing'
+    )
 
 
 }
 )
+
+rm(mod)
+
+
+
+# ................................................
+# ................................................
 
 
 
@@ -189,4 +225,4 @@ test_that("describe_var method works", {
 # })
 
 #rm(nfidb)
-rm(mod)
+
