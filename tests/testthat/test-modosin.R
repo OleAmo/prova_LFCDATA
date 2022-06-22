@@ -58,7 +58,7 @@ test_that("avail_table method works", {
   expect_is(mod$avail_tables(), c('character'))
   expect_type(mod$avail_tables(),'character')
   expect_true("variables_thesaurus" %in% mod$avail_tables())
-}
+  }
 )
 
 
@@ -74,7 +74,7 @@ test_that("describe_table method works", {
   expect_error(mod$describe_table(NA), 'Argument tables is not character')
   expect_error(mod$describe_table(25), 'Argument tables is not character')
   expect_error(mod$describe_table(), "el argumento \"tables\" está ausente, sin valor por omisión")
-}
+  }
 )
 
 test_that("describe_var method works", {
@@ -86,16 +86,13 @@ test_that("describe_var method works", {
   expect_output(mod$describe_var(c("REW","Precipitaion","LAI")))
 
   # errors
-    expect_error(
-      mod$describe_var(NA), Message = "Argument variables is not character"
-    )
-    expect_error(
-      mod$describe_var(21), Message = "Argument variables is not character"
-    )
-    expect_error(
-      mod$describe_var(), Message = 'argument "variables" is missing'
-    )
-}
+    expect_error(mod$describe_var(NA),
+                 Message = "Argument variables is not character")
+    expect_error(mod$describe_var(21),
+                 Message = "Argument variables is not character")
+    expect_error(mod$describe_var(),
+                 Message = 'argument "variables" is missing')
+  }
 )
 
 rm(mod)

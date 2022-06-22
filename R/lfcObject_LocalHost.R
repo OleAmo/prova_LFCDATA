@@ -30,8 +30,6 @@ lfcObject_LH <- R6::R6Class(
         return(query_data)
       }
 
-
-
     }
   },
 

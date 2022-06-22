@@ -1,5 +1,18 @@
 
 
+# ........... TIME PROCESSING CAT ...............
+# ...........................................
+
+
+#        .) Creo una función que VISUALITZE via CAT el resultada del TIMEING
+
+
+timeingCat <- function(dif){
+  cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
+  cat ("\n")
+}
+
+
 # ........... CHECK_ARGS_FOR ...............
 # ...........................................
 

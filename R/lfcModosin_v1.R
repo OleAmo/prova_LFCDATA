@@ -43,7 +43,6 @@ lfcMODOSIN <- R6::R6Class(
     #            .) ANULO  Return (RES)
     #            .) ACTIVO Return (DIF)
 
-
     get_data_TIMING_SQL = function(table_name,date_1){
 
       date_2 <- as.Date(date_1, format = "%Y-%m-%d")
@@ -62,7 +61,6 @@ lfcMODOSIN <- R6::R6Class(
     },
 
 
-
     # ................... GET_DATA R ...................
     # ..................................................
 
@@ -70,9 +68,7 @@ lfcMODOSIN <- R6::R6Class(
     #      .) En R = seleccion de fecha
 
     get_data_by_R = function(table_name,date_1){
-
       date_1 <- as.Date(date_1, format = "%Y-%m-%d")
-      t1 <- Sys.time()
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data_R(table_name) %>%
@@ -81,13 +77,7 @@ lfcMODOSIN <- R6::R6Class(
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
-      t2 <- Sys.time()
-      dif <- (t2 - t1)
-
-      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
-      cat ("\n")
       return(res)
-
     },
 
     # ................. GET_DATA SQL ..................
@@ -97,9 +87,7 @@ lfcMODOSIN <- R6::R6Class(
     #      .) En R = lo pasamos a dataframe
 
     get_data_by_SQL = function(table_name,date_1){
-
       date_2 <- as.Date(date_1, format = "%Y-%m-%d")
-      t1 <- Sys.time()
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
@@ -107,13 +95,7 @@ lfcMODOSIN <- R6::R6Class(
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
-      t2 <- Sys.time()
-      dif <- (t2 - t1)
-
-      cat (crayon::yellow$bold("Processing Time = ",round(dif[[1]], digits = 4)," seg \n") )
-      cat ("\n")
       return(res)
-
     },
 
 
