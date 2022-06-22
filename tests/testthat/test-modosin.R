@@ -34,20 +34,20 @@ test_that("get_data method works", {
   expect_s3_class(mod$get_data_by_SQL('data_day','2021-10-31'),'data.frame')
 
   # errors
-  expect_error(
-    mod$get_data_by_R('data_day',FALSE), Message = "do not know how to convert"
-  )
-  expect_error(
-    mod$get_data_by_R('data_day',21), Message = "'origin' must be supplied"
-  )
-  expect_error(
-    mod$get_data_by_R(FALSE,21), Message = "'origin' must be supplied"
-  )
-  expect_error(
-    mod$get_data_by_R('non_existent_table','2021-10-31'), Message = "Can not connect to the database"
-  )
+  expect_error(mod$get_data_by_R('prova_dec_bc_4_plots_nfi3'),
+               Message = 'argument "date_1" is missing, with no default')
 
+  expect_error(mod$get_data_by_R('data_day',FALSE),
+               Message = "do not know how to convert")
 
+  expect_error(mod$get_data_by_R('data_day',21),
+               Message = "'origin' must be supplied")
+
+  expect_error(mod$get_data_by_R(FALSE,21),
+               Message = "'origin' must be supplied")
+
+  expect_error(mod$get_data_by_R('non_existent_table','2021-10-31'),
+               Message = "Can not connect to the database")
   }
 )
 
@@ -58,8 +58,6 @@ test_that("avail_table method works", {
   expect_is(mod$avail_tables(), c('character'))
   expect_type(mod$avail_tables(),'character')
   expect_true("variables_thesaurus" %in% mod$avail_tables())
-
-
 }
 )
 
@@ -76,8 +74,6 @@ test_that("describe_table method works", {
   expect_error(mod$describe_table(NA), 'Argument tables is not character')
   expect_error(mod$describe_table(25), 'Argument tables is not character')
   expect_error(mod$describe_table(), "el argumento \"tables\" está ausente, sin valor por omisión")
-
-
 }
 )
 
@@ -99,8 +95,6 @@ test_that("describe_var method works", {
     expect_error(
       mod$describe_var(), Message = 'argument "variables" is missing'
     )
-
-
 }
 )
 
