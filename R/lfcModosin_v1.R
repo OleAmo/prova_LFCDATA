@@ -68,6 +68,9 @@ lfcMODOSIN <- R6::R6Class(
     #      .) En R = seleccion de fecha
 
     get_data_by_R = function(table_name,date_1){
+
+      check_args_for(date = list(date = date_1))
+
       date_1 <- as.Date(date_1, format = "%Y-%m-%d")
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
@@ -87,6 +90,9 @@ lfcMODOSIN <- R6::R6Class(
     #      .) En R = lo pasamos a dataframe
 
     get_data_by_SQL = function(table_name,date_1){
+
+      check_args_for(date = list(date = date_1))
+
       date_2 <- as.Date(date_1, format = "%Y-%m-%d")
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
@@ -130,6 +136,7 @@ lfcMODOSIN <- R6::R6Class(
           modosin_describe_table_cat,
           tables_dict = tables_dict, variables_thes = variables_thes
         )
+
       return(invisible(self))
     },
 
