@@ -120,9 +120,8 @@ lfcObject_LH <- R6::R6Class(
       }
 
     }
-  }
+  }),
 
-  ),
   private = list(
     dbname = NULL,
     pool_conn = NA,
