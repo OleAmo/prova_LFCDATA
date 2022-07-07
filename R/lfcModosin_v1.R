@@ -96,13 +96,29 @@ lfcMODOSIN <- R6::R6Class(
       date_2 <- as.Date(date_1, format = "%Y-%m-%d")
       res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
         {
-          query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
-            data.frame()
+          query_data_spatial <- super$get_data_SQL(table_name,date_2)
           private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
       return(res)
     },
+
+    # ............... GET_DATA SHAPE ..................
+    # .................................................
+
+    #      .) Consulta hecha solo para descargar SHPAES (Provincias, Comarques,...)
+    #      .) La Consulta SQL => SELECCION por FECHA
+    #      .) En R = lo pasamos a dataframe
+
+    get_data_SHAPE = function(table_name){
+        res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
+          {
+            query_data_spatial <- super$get_data_R(table_name)
+            private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data_spatial
+            query_data_spatial
+          }
+        return(res)
+      },
 
 
     # ... AVAIL TABLES ...
