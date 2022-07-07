@@ -21,6 +21,10 @@ mod <- modosin()
 
 test_that("get_data method works", {
 
+  # Si las pruebas deben ejecutarse con relativa rapidez,
+  # idealmente menos de un minuto en total. Utilice skip_on_cran()
+  # en una prueba que sea inevitablemente de larga duración.
+
   skip_on_cran()
   skip_on_travis()
 
