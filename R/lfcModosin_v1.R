@@ -60,6 +60,47 @@ lfcMODOSIN <- R6::R6Class(
 
     },
 
+    # ............. TIMING LOOP CALCULATE ..............
+    # .................................................
+
+    #      .)
+
+    timing_loop = function(loops, date, type){
+
+      df <- data.frame()
+      mod <- modosin()
+
+      if(type == "SQL") {
+        for (i in 1:loops) {
+          res <- mod$get_data_TIMING_SQL("data_day",date)
+          df <- rbind(df,res)
+          date <- as.Date(date) +1
+        }
+      } else if (type == "R") {
+        for (i in 1:loops) {
+          res <- mod$get_data_TIMING_R("data_day",date)
+          df <- rbind(df,res)
+          date <- as.Date(date) +1
+        }
+      } else {
+        stop("Error Type Loop")
+      }
+
+      timing_1st <- as.character(round(df[[1]][1], digit = 5)) # 1r loop (el que consume mas tiempo)
+
+      df <- df[2:nrow(df),] %>%     # eliminamos la 1ra entrada (es la mas distinta)
+        data.frame()
+
+      mean <- summary(df)[4] %>%    # calculo de la media de los loops_timings
+        str_split_fixed(.,":", 2)%>%
+        .[,2] %>%
+        as.numeric()
+
+      final <- paste0("loops (",loops,") / timing_mean = ",mean," / 1rs_timing = ", timing_1st)
+
+      return(final)
+    },
+
 
     # ................... GET_DATA R ...................
     # ..................................................
@@ -119,6 +160,7 @@ lfcMODOSIN <- R6::R6Class(
           }
         return(res)
       },
+
 
 
     # ... AVAIL TABLES ...
