@@ -7,8 +7,8 @@ test_that("class object creation works", {
   expect_true(rlang::is_function(modosin()$get_data_by_SQL))
   expect_true(rlang::is_function(modosin()$get_data_SQL))
   expect_true(rlang::is_function(modosin()$get_data_R))
-  expect_true(rlang::is_function(modosin()$get_data_SQL_tim))
-  expect_true(rlang::is_function(modosin()$get_data_R_tim))
+  expect_true(rlang::is_function(modosin()$get_data_SHAPE))
+  expect_true(rlang::is_function(modosin()$timing_loop))
   expect_true(rlang::is_function(modosin()$avail_tables))
   expect_true(rlang::is_function(modosin()$describe_table))
   expect_true(rlang::is_function(modosin()$describe_var))
@@ -28,14 +28,19 @@ test_that("get_data method works", {
   skip_on_cran()
   skip_on_travis()
 
-  expect_s3_class(mod$get_data_R_tim('data_day'),'data.frame')
-  expect_s3_class(mod$get_data_SQL_tim('data_day','2021-10-31'),'data.frame')
   expect_s3_class(mod$get_data_R('data_day'),'data.frame')
   expect_s3_class(mod$get_data_SQL('data_day','2021-10-31'),'data.frame')
   expect_s3_class(mod$get_data_TIMING_R('data_day','2021-10-31'),'difftime')
   expect_s3_class(mod$get_data_TIMING_SQL('data_day','2021-10-31'),'difftime')
   expect_s3_class(mod$get_data_by_R('data_day','2021-10-31'),'data.frame')
   expect_s3_class(mod$get_data_by_SQL('data_day','2021-10-31'),'data.frame')
+
+  # Hacer TESTS => GET_DATA SHAPE
+  # Hacer TESTS => TIMING LOOP
+
+  # expect_s3_class(mod$get_data_SHAPE("xxxxx"))
+  # expect_s3_class(mod$timing_loop("xxxxx"))
+
 
   # errors
   expect_error(mod$get_data_by_R('prova_dec_bc_4_plots_nfi3'),
