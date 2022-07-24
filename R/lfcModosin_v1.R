@@ -96,7 +96,7 @@ lfcMODOSIN <- R6::R6Class(
         .[,2] %>%
         as.numeric()
 
-      final <- paste0("loops (",loops,") / timing_mean = ",mean," / 1rs_timing = ", timing_1st)
+      final <- paste0("loops (",loops," type = ",type,") / timing_mean = ",mean," / 1rs_timing = ", timing_1st)
 
       return(final)
     },
