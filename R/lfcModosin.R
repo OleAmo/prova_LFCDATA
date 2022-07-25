@@ -68,16 +68,18 @@ lfcMODOSIN <- R6::R6Class(
     timing_loop = function(loops, date, type){
 
       df <- data.frame()
-      mod <- modosin()
+
 
       if(type == "SQL") {
         for (i in 1:loops) {
+          mod <- modosin()
           res <- mod$get_data_TIMING_SQL("data_day",date)
           df <- rbind(df,res)
           date <- as.Date(date) +1
         }
       } else if (type == "R") {
         for (i in 1:loops) {
+          mod <- modosin()
           res <- mod$get_data_TIMING_R("data_day",date)
           df <- rbind(df,res)
           date <- as.Date(date) +1
@@ -92,7 +94,7 @@ lfcMODOSIN <- R6::R6Class(
         data.frame()
 
       mean <- summary(df)[4] %>%    # calculo de la media de los loops_timings
-        str_split_fixed(.,":", 2)%>%
+        stringr::str_split_fixed(.,":", 2)%>%
         .[,2] %>%
         as.numeric()
 
