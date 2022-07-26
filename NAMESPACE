@@ -35,8 +35,7 @@ export(nfi_get_data)
 
 export(modosin)
 export(modosin_get_data)
-export(modosin_describe_table_cat)
-export(modosin_describe_var_eng)
+
 
 importFrom(R6,R6Class)
 importFrom(crayon,"%+%")

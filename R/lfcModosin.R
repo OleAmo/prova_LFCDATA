@@ -25,13 +25,13 @@ lfcMODOSIN <- R6::R6Class(
       # check_args_for(table name) => is always validated in the super
       check_args_for(date = list(date = date))
 
-      date<- as.Date(date, format = "%Y-%m-%d")
-      res <- private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] %||%
+      date_replaced<- as.Date(date, format = "%Y-%m-%d")
+      res <- private$data_cache[[glue::glue("{table_name}_{date_replaced}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data(table_name) %>%
             data.frame() %>%
-               dplyr::filter(date == date)
-          private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] <- query_data_spatial
+               dplyr::filter(date == date_replaced)
+          private$data_cache[[glue::glue("{table_name}_{date_replaced}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
       return(res)
@@ -70,7 +70,7 @@ lfcMODOSIN <- R6::R6Class(
     # ....................
 
     describe_var = function(variables) {
-      check_args_for_LH(character = list(variables = variables))
+      check_args_for(character = list(variables = variables))
 
       variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
       numerical_thes <- suppressMessages(super$get_data('variables_numerical'))
