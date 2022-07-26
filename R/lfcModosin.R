@@ -12,184 +12,50 @@ lfcMODOSIN <- R6::R6Class(
 
   public = list(
 
-    # ............... TIMING GET_DATA R ................
-    # ..................................................
-
-    #      .) Es igual al GET_DATA_R, pero:
-    #            .) ANULO  Return (RES)
-    #            .) ACTIVO Return (DIF)
-
-    get_data_TIMING_R = function(table_name,date_1){
-
-      t1 <- Sys.time()
-      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
-        {
-          query_data_spatial <- super$get_data_R(table_name) %>%
-            data.frame() %>%
-            dplyr::filter(date == date_1)
-          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
-          query_data_spatial
-        }
-      t2 <- Sys.time()
-      dif <- (t2 - t1)
-      return(dif)
-
-    },
-
-    # ............... TIMING GET_DATA SQL ................
-    # ..................................................
-
-    #      .) Es igual al GET_DATA_SQL, pero:
-    #            .) ANULO  Return (RES)
-    #            .) ACTIVO Return (DIF)
-
-    get_data_TIMING_SQL = function(table_name,date_1){
-
-      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
-      t1 <- Sys.time()
-      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
-        {
-          query_data_spatial <- super$get_data_SQL(table_name,date_2) %>%
-            data.frame()
-          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
-          query_data_spatial
-        }
-      t2 <- Sys.time()
-      dif <- (t2 - t1)
-      return(dif)
-
-    },
-
-    # ............. TIMING LOOP CALCULATE ..............
-    # .................................................
-
-    #      .)
-
-    timing_loop = function(loops, date, type){
-
-      df <- data.frame()
-
-
-      if(type == "SQL") {
-        for (i in 1:loops) {
-          mod <- modosin()
-          res <- mod$get_data_TIMING_SQL("data_day",date)
-          df <- rbind(df,res)
-          date <- as.Date(date) +1
-        }
-      } else if (type == "R") {
-        for (i in 1:loops) {
-          mod <- modosin()
-          res <- mod$get_data_TIMING_R("data_day",date)
-          df <- rbind(df,res)
-          date <- as.Date(date) +1
-        }
-      } else {
-        stop("Error Type Loop")
-      }
-
-      timing_1st <- as.character(round(df[[1]][1], digit = 5)) # 1r loop (el que consume mas tiempo)
-
-      df <- df[2:nrow(df),] %>%     # eliminamos la 1ra entrada (es la mas distinta)
-        data.frame()
-
-      mean <- summary(df)[4] %>%    # calculo de la media de los loops_timings
-        stringr::str_split_fixed(.,":", 2)%>%
-        .[,2] %>%
-        as.numeric()
-
-      final <- paste0("loops (",loops," type = ",type,") / timing_mean = ",mean," / 1rs_timing = ", timing_1st)
-
-      return(final)
-    },
-
-
     # ................... GET_DATA R ...................
     # ..................................................
 
-    #      .) La Consulta SQL => TODAS las FECHAS
-    #      .) En R = seleccion de fecha
+    #      .) Usamos SUPER$GET_DATA  (dplyr::tbl + dplyr::collect)
+    #      .) Nos descargamos TODA la TABLA con TODAS las FECHAS
+    #      .) Usamos FILTER para seleccionar UNA FECHA
 
-    get_data_by_R = function(table_name,date_1){
 
-      check_args_for(date = list(date = date_1))
+    get_data = function(table_name,date){
 
-      date_1 <- as.Date(date_1, format = "%Y-%m-%d")
-      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
+      # check_args_for(table name) => is always validated in the super
+      check_args_for(date = list(date = date))
+
+      date<- as.Date(date, format = "%Y-%m-%d")
+      res <- private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] %||%
         {
-          query_data_spatial <- super$get_data_R(table_name) %>%
+          query_data_spatial <- super$get_data(table_name) %>%
             data.frame() %>%
-               dplyr::filter(date == date_1)
-          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
+               dplyr::filter(date == date)
+          private$data_cache[[glue::glue("{table_name}_{date}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
       return(res)
     },
 
-    # ................. GET_DATA SQL ..................
-    # .................................................
+    # .................. AVAIL TABLES ..................
+    # ..................................................
 
-    #      .) La Consulta SQL => SELECCION por FECHA
-    #      .) En R = lo pasamos a dataframe
-
-    get_data_by_SQL = function(table_name,date_1){
-
-      check_args_for_LH(date = list(date = date_1))
-
-      date_2 <- as.Date(date_1, format = "%Y-%m-%d")
-      res <- private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] %||%
-        {
-          query_data_spatial <- super$get_data_SQL(table_name,date_2)
-          private$data_cache[[glue::glue("{table_name}_{date_1}_FALSE")]] <- query_data_spatial
-          query_data_spatial
-        }
-      return(res)
-    },
-
-    # ............... GET_DATA SHAPE ..................
-    # .................................................
-
-    #      .) Consulta hecha solo para descargar SHPAES (Provincias, Comarques,...)
-    #      .) La Consulta SQL => SELECCION por FECHA
-    #      .) En R = lo pasamos a dataframe
-
-    get_data_SHAPE = function(table_name){
-        res <- private$data_cache[[glue::glue("{table_name}_FALSE")]] %||%
-          {
-            query_data_spatial <- super$get_data_R(table_name)
-            private$data_cache[[glue::glue("{table_name}_FALSE")]] <- query_data_spatial
-            query_data_spatial
-          }
-        return(res)
-      },
-
-
-
-    # ... AVAIL TABLES ...
-    # ....................
 
     avail_tables = function() {
-      # no tables = Tablas que no se mostraran
-      no_tables<- c("geography_columns","geometry_columns","layer","spatial_ref_sys","topology")
-      res_1 <- pool::dbListTables(private$pool_conn) %>%
-        tolower() %>%
-        unique() %>%
-        sort()
-      # eliminar de los resultados las tablas que el usuario no visualizará
-      res_2 <- res_1[!res_1 %in% no_tables]
-      return(res_2)
+      c('data_day','plots')
     },
 
-    # ... DESCRIVE TABLE ...
-    # ......................
+    # .................. DESCRIBE VAR ..................
+    # ..................................................
+
 
     describe_table = function(tables){
 
-      check_args_for_LH(character = list(tables = tables))
+      check_args_for(character = list(tables = tables))
       check_if_in_for(tables, self$avail_tables())
 
       tables_dict <- nfi_table_dictionary()
-      variables_thes <- suppressMessages(self$get_data_R('variables_thesaurus'))
+      variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
 
       tables %>%
         purrr::map(
@@ -206,8 +72,8 @@ lfcMODOSIN <- R6::R6Class(
     describe_var = function(variables) {
       check_args_for_LH(character = list(variables = variables))
 
-      variables_thes <- suppressMessages(self$get_data_R('variables_thesaurus'))
-      numerical_thes <- suppressMessages(self$get_data_R('variables_numerical'))
+      variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
+      numerical_thes <- suppressMessages(super$get_data('variables_numerical'))
 
       variables %>%
         purrr::map(
@@ -217,6 +83,19 @@ lfcMODOSIN <- R6::R6Class(
 
       invisible(self)
 
+    },
+    print = function(...) {
+      cat(
+        " Access to Laboratori Forestal (CREAF).\n",
+        crayon::blue$underline("laboratoriforestal.creaf.cat\n\n"),
+        "Use " %+% crayon::yellow$bold("nfi_get_data") %+%
+          " to access the tables.\n",
+        "Use " %+% crayon::yellow$bold("nfi_avail_tables") %+%
+          " to know which tables are available.\n",
+        "Use " %+% crayon::yellow$bold("nfi_describe_var") %+%
+          " to get the information available on the variables.\n"
+      )
+      invisible(self)
     }
 
   ),
@@ -225,6 +104,19 @@ lfcMODOSIN <- R6::R6Class(
     dbname ="creaf_v4"
   )
 )
+
+# ............... FUNCIONES REDIRECIONABLES ............
+# ......................................................
+
+
+modosin_get_data <- function(object, table_name, date) {
+  # argument validation
+  # NOTE: table_name and spatial are validated in the method
+  check_class_for(object, 'lfcMODOSIN')
+  check_args_for(date = list(date = date))
+  # call to the class method
+  object$get_data(table_name, date)
+}
 
 
 

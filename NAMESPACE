@@ -34,8 +34,7 @@ export(nfi_describe_var)
 export(nfi_get_data)
 
 export(modosin)
-export(timeingCat)
-export(check_args_for_LH)
+export(modosin_get_data)
 export(modosin_describe_table_cat)
 export(modosin_describe_var_eng)
 
