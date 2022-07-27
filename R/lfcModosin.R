@@ -9,7 +9,6 @@ lfcMODOSIN <- R6::R6Class(
   inherit = lfcObject_LH,
   cloneable = FALSE,
 
-
   public = list(
 
     # ................... GET_DATA R ...................
@@ -19,19 +18,18 @@ lfcMODOSIN <- R6::R6Class(
     #      .) Nos descargamos TODA la TABLA con TODAS las FECHAS
     #      .) Usamos FILTER para seleccionar UNA FECHA
 
-
     get_data = function(table_name,date){
 
       # check_args_for(table name) => is always validated in the super
       check_args_for(date = list(date = date))
+      date_format <- as.Date(date)
 
-      date_replaced<- as.Date(date, format = "%Y-%m-%d")
-      res <- private$data_cache[[glue::glue("{table_name}_{date_replaced}_FALSE")]] %||%
+      res <- private$data_cache[[glue::glue("{table_name}_{date_format}_FALSE")]] %||%
         {
           query_data_spatial <- super$get_data(table_name) %>%
             data.frame() %>%
-               dplyr::filter(date == date_replaced)
-          private$data_cache[[glue::glue("{table_name}_{date_replaced}_FALSE")]] <- query_data_spatial
+               dplyr::filter(date == date_format)
+          private$data_cache[[glue::glue("{table_name}_{date_format}_FALSE")]] <- query_data_spatial
           query_data_spatial
         }
       return(res)
@@ -42,7 +40,7 @@ lfcMODOSIN <- R6::R6Class(
 
 
     avail_tables = function() {
-      c('data_day','plots')
+      c('data_day')
     },
 
     # .................. DESCRIBE VAR ..................
@@ -88,9 +86,9 @@ lfcMODOSIN <- R6::R6Class(
       cat(
         " Access to Laboratori Forestal (CREAF).\n",
         crayon::blue$underline("laboratoriforestal.creaf.cat\n\n"),
-        "Use " %+% crayon::yellow$bold("nfi_get_data") %+%
+        "Use " %+% crayon::yellow$bold("modosin_get_data") %+%
           " to access the tables.\n",
-        "Use " %+% crayon::yellow$bold("nfi_avail_tables") %+%
+        "Use " %+% crayon::yellow$bold("modosin_avail_tables") %+%
           " to know which tables are available.\n",
         "Use " %+% crayon::yellow$bold("nfi_describe_var") %+%
           " to get the information available on the variables.\n"
@@ -116,6 +114,22 @@ modosin_get_data <- function(object, table_name, date) {
   check_args_for(date = list(date = date))
   # call to the class method
   object$get_data(table_name, date)
+}
+
+modosin_avail_tables <- function(object) {
+  check_class_for(object, 'lfcMODOSIN')
+  object$avail_tables()
+}
+
+modosin_describe_table <- function(object, tables) {
+
+  check_class_for(object, 'lfcMODOSIN')
+  object$describe_table(tables)
+}
+
+modosin_describe_var<- function(object, variables) {
+  check_class_for(object, 'lfcMODOSIN')
+  object$describe_var(variables)
 }
 
 
