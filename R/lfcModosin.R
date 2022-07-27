@@ -90,8 +90,11 @@ lfcMODOSIN <- R6::R6Class(
           " to access the tables.\n",
         "Use " %+% crayon::yellow$bold("modosin_avail_tables") %+%
           " to know which tables are available.\n",
-        "Use " %+% crayon::yellow$bold("nfi_describe_var") %+%
+        "Use " %+% crayon::yellow$bold("modosin_describe_table") %+%
+          " to get the information available on the tables.\n",
+        "Use " %+% crayon::yellow$bold("modosin_describe_var") %+%
           " to get the information available on the variables.\n"
+
       )
       invisible(self)
     }
@@ -103,8 +106,8 @@ lfcMODOSIN <- R6::R6Class(
   )
 )
 
-# ............... FUNCIONES REDIRECIONABLES ............
-# ......................................................
+# ............... FUNCIONES .....................
+# ...............................................
 
 
 modosin_get_data <- function(object, table_name, date) {
