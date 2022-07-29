@@ -14,8 +14,10 @@ lfcMODOSIN <- R6::R6Class(
     # ................... GET_DATA R ...................
     # ..................................................
 
-    #      .) Usamos SUPER$GET_DATA  (dplyr::tbl + dplyr::collect)
-    #      .) Nos descargamos TODA la TABLA con TODAS las FECHAS
+    #      .) NO Usamos SUPER$GET_DATA => ya que devuelve CACHE tipo SPATIAL = FALSE
+    #      .) En MODOSIN el GET_DATA   => SIMPRE devuelve tabla con GEOMETRIA (SPATIAL = TRUE)
+    #      .) Usamos el SF::ST_READ    => Se conecta a al BBDD y devuleve SF con geometría
+    #      .) El CACHE lo dejamos como TRUE
     #      .) Usamos FILTER para seleccionar UNA FECHA
 
     get_data = function(table_name,date){
@@ -24,14 +26,17 @@ lfcMODOSIN <- R6::R6Class(
       check_args_for(date = list(date = date))
       date_format <- as.Date(date)
 
-      res <- private$data_cache[[glue::glue("{table_name}_{date_format}_FALSE")]] %||%
+      res <- private$data_cache[[glue::glue("{table_name}_{date_format}_TRUE")]] %||%
         {
-          query_data_spatial <- super$get_data(table_name) %>%
-            data.frame() %>%
-               dplyr::filter(date == date_format)
-          private$data_cache[[glue::glue("{table_name}_{date_format}_FALSE")]] <- query_data_spatial
+          message('Querying table from LFC database, this can take a while...')
+          query_data_spatial <- sf::st_read(private$pool_conn, table_name) %>%
+                                  data.frame() %>%
+                                    dplyr::filter(date == date_format)
+          message('Done')
+          private$data_cache[[glue::glue("{table_name}_{date_format}_TRUE")]] <- query_data_spatial
           query_data_spatial
         }
+
       return(res)
     },
 
