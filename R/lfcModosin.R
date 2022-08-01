@@ -43,13 +43,20 @@ lfcMODOSIN <- R6::R6Class(
     # .................. AVAIL TABLES ..................
     # ..................................................
 
+    #      .) El usuario SOLO puede acceder a la tabla DATA_dAY
+    #      .) El resto de tablas de la BBDD no son accesibles
+
 
     avail_tables = function() {
       c('data_day')
     },
 
-    # .................. DESCRIBE VAR ..................
+    # ................ DESCRIBE TABLE ..................
     # ..................................................
+
+    #      .) Para obtener VARIABLES THESAURUS
+    #      .) Usamos SUPER$GET_DATA
+    #      .) Ya que queremos descargar de la BBDD una tabla sin GEOMETRIA
 
 
     describe_table = function(tables){
@@ -69,8 +76,12 @@ lfcMODOSIN <- R6::R6Class(
       return(invisible(self))
     },
 
-    # ... DESCRIVE VAR ...
-    # ....................
+    # .................. DESCRIBE VAR ..................
+    # ..................................................
+
+    #      .) Para obtener VARIABLES THESAURUS / NUMERICAL
+    #      .) Usamos SUPER$GET_DATA
+    #      .) Ya que queremos descargar de la BBDD dos tablas sin GEOMETRIA
 
     describe_var = function(variables) {
       check_args_for(character = list(variables = variables))
@@ -114,13 +125,17 @@ lfcMODOSIN <- R6::R6Class(
 # ............... FUNCIONES .....................
 # ...............................................
 
+#      .) Estas funciones facilitan al usuario acceder a los datos
+#      .) Cada método tine una función
+#      .) Todas se inicializan con un OBJETO => Es modosin()
+#      .) CHECKS:
+#               .) Solo tienen CHECK CLASS
+#               .) Las variables seran Chequeadas por el método
+
+
 
 modosin_get_data <- function(object, table_name, date) {
-  # argument validation
-  # NOTE: table_name and spatial are validated in the method
   check_class_for(object, 'lfcMODOSIN')
-  check_args_for(date = list(date = date))
-  # call to the class method
   object$get_data(table_name, date)
 }
 
@@ -130,7 +145,6 @@ modosin_avail_tables <- function(object) {
 }
 
 modosin_describe_table <- function(object, tables) {
-
   check_class_for(object, 'lfcMODOSIN')
   object$describe_table(tables)
 }
