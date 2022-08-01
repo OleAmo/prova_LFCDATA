@@ -1,4 +1,20 @@
 
+# ........ MODOSIN TABLE DICTIONARY .........
+# ...........................................
+
+#        .) Tenemos solo UNA TABLA => data_day
+#        .) Por lo tanto el diccionario solo saldrà
+#              .) DATA
+#              .) DAY
+
+
+modosin_table_dictionary <- function() {
+  c(
+    day = ', every day are generated variables from MEDFATE Model.',
+    data = 'Plots eco-physiological variables from NFI version 4 (2013-2016)'
+  )
+}
+
 
 # ........... DESCRIBRE TABLE ...............
 # ...........................................

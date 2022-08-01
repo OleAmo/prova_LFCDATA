@@ -64,7 +64,7 @@ lfcMODOSIN <- R6::R6Class(
       check_args_for(character = list(tables = tables))
       check_if_in_for(tables, self$avail_tables())
 
-      tables_dict <- nfi_table_dictionary()
+      tables_dict <- modosin_table_dictionary()
       variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
 
       tables %>%
