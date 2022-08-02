@@ -40,8 +40,6 @@ lfcMODOSIN <- R6::R6Class(
         {
           message('Querying table from LFC database, this can take a while...')
           query_data_spatial <- sf::st_read(private$pool_conn, table_name)
-                                  # data.frame() %>%
-                                  #   dplyr::filter(date == date_format)
           message('Done')
           private$data_cache[[glue::glue("{table_name}_TRUE")]] <- query_data_spatial
           query_data_spatial
