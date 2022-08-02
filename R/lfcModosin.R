@@ -14,26 +14,36 @@ lfcMODOSIN <- R6::R6Class(
     # ................... GET_DATA R ...................
     # ..................................................
 
-    #      .) NO Usamos SUPER$GET_DATA => ya que devuelve CACHE tipo SPATIAL = FALSE
-    #      .) En MODOSIN el GET_DATA   => SIMPRE devuelve tabla con GEOMETRIA (SPATIAL = TRUE)
-    #      .) Usamos el SF::ST_READ    => Se conecta a al BBDD y devuleve SF con geometría
-    #      .) El CACHE lo dejamos como TRUE
-    #      .) Usamos FILTER para seleccionar UNA FECHA
+    #      .) GET_DATA SIMPRE devuelve tabla (tipo SF) con GEOMETRIA
+    #      .) Por lo tanto:
 
-    get_data = function(table_name,date){
+    #             .) NO Usamos SUPER$GET_DATA (devuelve DF sin geometría)
+    #             .) CACHE siempre (SPATIAL = TRUE)
+    #             .) Usamos el SF::ST_READ  (Se conecta a al BBDD y devuelve SF con geometría)
+    #             .) NO Usamos FILTER para seleccionar UNA FECHA
+    #                       .) Nos descargarmos TODA la TABLA
+    #                       .) Con todas las FECHAS y datos
+    #                       .) Pesarà poco para R y despues en la App ya la filtraremos (fecha,variable,...)
 
-      # check_args_for(table name) => is always validated in the super
-      check_args_for(date = list(date = date))
-      date_format <- as.Date(date)
+    #      .) Tablas por DEFECTO
+    #                       .) Usamos (table_name = "data_day") para indicar que el defecto es "data_day"
+    #                       .) Así => get_data() lo hace en f(x) de la tabla "data_day"
+    #                       .) Y si queremos otra tabla usamos => get_data("municipios")
 
-      res <- private$data_cache[[glue::glue("{table_name}_{date_format}_TRUE")]] %||%
+
+    get_data = function(table_name = "data_day") {
+
+      check_args_for(character = list(table_name = table_name))
+
+
+      res <- private$data_cache[[glue::glue("{table_name}_TRUE")]] %||%
         {
           message('Querying table from LFC database, this can take a while...')
-          query_data_spatial <- sf::st_read(private$pool_conn, table_name) %>%
-                                  data.frame() %>%
-                                    dplyr::filter(date == date_format)
+          query_data_spatial <- sf::st_read(private$pool_conn, table_name)
+                                  # data.frame() %>%
+                                  #   dplyr::filter(date == date_format)
           message('Done')
-          private$data_cache[[glue::glue("{table_name}_{date_format}_TRUE")]] <- query_data_spatial
+          private$data_cache[[glue::glue("{table_name}_TRUE")]] <- query_data_spatial
           query_data_spatial
         }
 
@@ -134,9 +144,9 @@ lfcMODOSIN <- R6::R6Class(
 
 
 
-modosin_get_data <- function(object, table_name, date) {
+modosin_get_data <- function(object, table_name = "data_day") {
   check_class_for(object, 'lfcMODOSIN')
-  object$get_data(table_name, date)
+  object$get_data(table_name)
 }
 
 modosin_avail_tables <- function(object) {
