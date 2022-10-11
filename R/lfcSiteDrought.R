@@ -1,13 +1,13 @@
 #'
 #'
 #' @export
-plotDrought <- function() {
-  lfcplotDrought$new()
+siteDrought <- function() {
+  lfcsiteDrought$new()
 }
 
-lfcplotDrought <- R6::R6Class(
+lfcsiteDrought <- R6::R6Class(
 
-  classname = "lfcplotDrought",
+  classname = "lfcsiteDrought",
   inherit = lfcObject_LH,
   cloneable = FALSE,
 
@@ -74,12 +74,12 @@ lfcplotDrought <- R6::R6Class(
       check_args_for(character = list(tables = tables))
       check_if_in_for(tables, self$avail_tables())
 
-      tables_dict <- plotDrought_table_dictionary()
+      tables_dict <- siteDrought_table_dictionary()
       variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
 
       tables %>%
         purrr::map(
-          plotDrought_describe_table_cat,
+          siteDrought_describe_table_cat,
           tables_dict = tables_dict, variables_thes = variables_thes
         )
 
@@ -101,7 +101,7 @@ lfcplotDrought <- R6::R6Class(
 
       variables %>%
         purrr::map(
-          plotDrought_describe_var_eng,
+          siteDrought_describe_var_eng,
           variables_thes = variables_thes, numerical_thes = numerical_thes
         )
 
@@ -112,13 +112,13 @@ lfcplotDrought <- R6::R6Class(
       cat(
         " Access to Laboratori Forestal (CREAF).\n",
         crayon::blue$underline("laboratoriforestal.creaf.cat\n\n"),
-        "Use " %+% crayon::yellow$bold("plotDrought_get_data") %+%
+        "Use " %+% crayon::yellow$bold("siteDrought_get_data") %+%
           " to access the tables.\n",
-        "Use " %+% crayon::yellow$bold("plotDrought_avail_tables") %+%
+        "Use " %+% crayon::yellow$bold("siteDrought_avail_tables") %+%
           " to know which tables are available.\n",
-        "Use " %+% crayon::yellow$bold("plotDrought_describe_table") %+%
+        "Use " %+% crayon::yellow$bold("siteDrought_describe_table") %+%
           " to get the information available on the tables.\n",
-        "Use " %+% crayon::yellow$bold("plotDrought_describe_var") %+%
+        "Use " %+% crayon::yellow$bold("siteDrought_describe_var") %+%
           " to get the information available on the variables.\n"
 
       )
@@ -137,7 +137,7 @@ lfcplotDrought <- R6::R6Class(
 
 #      .) Estas funciones facilitan al usuario acceder a los datos
 #      .) Cada método tine una función
-#      .) Todas se inicializan con un OBJETO => Es plotDrought()
+#      .) Todas se inicializan con un OBJETO => Es siteDrought()
 #      .) CHECKS:
 #               .) Solo tienen CHECK CLASS
 #               .) Las variables seran Chequeadas por el método
@@ -146,8 +146,8 @@ lfcplotDrought <- R6::R6Class(
 #'
 #'
 #' @export
-plotDrought_get_data <- function(object, table_name = "data_day") {
-  check_class_for(object, 'lfcplotDrought')
+siteDrought_get_data <- function(object, table_name = "data_day") {
+  check_class_for(object, 'lfcsiteDrought')
   object$get_data(table_name)
 }
 
@@ -155,8 +155,8 @@ plotDrought_get_data <- function(object, table_name = "data_day") {
 #'
 #'
 #' @export
-plotDrought_avail_tables <- function(object) {
-  check_class_for(object, 'lfcplotDrought')
+siteDrought_avail_tables <- function(object) {
+  check_class_for(object, 'lfcsiteDrought')
   object$avail_tables()
 }
 
@@ -164,8 +164,8 @@ plotDrought_avail_tables <- function(object) {
 #'
 #'
 #' @export
-plotDrought_describe_table <- function(object, tables) {
-  check_class_for(object, 'lfcplotDrought')
+siteDrought_describe_table <- function(object, tables) {
+  check_class_for(object, 'lfcsiteDrought')
   object$describe_table(tables)
 }
 
@@ -173,8 +173,8 @@ plotDrought_describe_table <- function(object, tables) {
 #'
 #'
 #' @export
-plotDrought_describe_var<- function(object, variables) {
-  check_class_for(object, 'lfcplotDrought')
+siteDrought_describe_var<- function(object, variables) {
+  check_class_for(object, 'lfcsiteDrought')
   object$describe_var(variables)
 }
 

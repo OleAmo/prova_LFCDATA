@@ -1,5 +1,5 @@
 
-# ...... PLOTDROUGHT TABLE DICTIONARY .......
+# ...... SITEDROUGHT TABLE DICTIONARY .......
 # ...........................................
 
 #        .) Tenemos solo UNA TABLA => data_day
@@ -8,7 +8,7 @@
 #              .) DAY
 
 
-plotDrought_table_dictionary <- function() {
+siteDrought_table_dictionary <- function() {
   c(
     day = ', every day are generated variables from MEDFATE Model.',
     data = 'Plots eco-physiological variables from NFI version 4 (2013-2016)'
@@ -44,7 +44,7 @@ plotDrought_table_dictionary <- function() {
 #                     .) Ordenamos la VARIABLE_NAME
 
 
-plotDrought_describe_table_cat = function(table, tables_dict, variables_thes){
+siteDrought_describe_table_cat = function(table, tables_dict, variables_thes){
 
     variable_names <- variables_thes %>%
         dplyr::filter(.data$var_table == table) %>%
@@ -93,7 +93,7 @@ plotDrought_describe_table_cat = function(table, tables_dict, variables_thes){
 
 
 
-plotDrought_describe_var_eng <- function(variable, variables_thes, numerical_thes) {
+siteDrought_describe_var_eng <- function(variable, variables_thes, numerical_thes) {
 
   variables_thes %>%
     dplyr::filter(.data$var_id == variable) %>%
