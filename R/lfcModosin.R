@@ -1,11 +1,13 @@
-
-modosin <- function() {
-  lfcMODOSIN$new()
+#'
+#'
+#' @export
+plotDrought <- function() {
+  lfcplotDrought$new()
 }
 
-lfcMODOSIN <- R6::R6Class(
+lfcplotDrought <- R6::R6Class(
 
-  classname = "lfcMODOSIN",
+  classname = "lfcplotDrought",
   inherit = lfcObject_LH,
   cloneable = FALSE,
 
@@ -72,12 +74,12 @@ lfcMODOSIN <- R6::R6Class(
       check_args_for(character = list(tables = tables))
       check_if_in_for(tables, self$avail_tables())
 
-      tables_dict <- modosin_table_dictionary()
+      tables_dict <- plotDrought_table_dictionary()
       variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
 
       tables %>%
         purrr::map(
-          modosin_describe_table_cat,
+          plotDrought_describe_table_cat,
           tables_dict = tables_dict, variables_thes = variables_thes
         )
 
@@ -99,7 +101,7 @@ lfcMODOSIN <- R6::R6Class(
 
       variables %>%
         purrr::map(
-          modosin_describe_var_eng,
+          plotDrought_describe_var_eng,
           variables_thes = variables_thes, numerical_thes = numerical_thes
         )
 
@@ -110,13 +112,13 @@ lfcMODOSIN <- R6::R6Class(
       cat(
         " Access to Laboratori Forestal (CREAF).\n",
         crayon::blue$underline("laboratoriforestal.creaf.cat\n\n"),
-        "Use " %+% crayon::yellow$bold("modosin_get_data") %+%
+        "Use " %+% crayon::yellow$bold("plotDrought_get_data") %+%
           " to access the tables.\n",
-        "Use " %+% crayon::yellow$bold("modosin_avail_tables") %+%
+        "Use " %+% crayon::yellow$bold("plotDrought_avail_tables") %+%
           " to know which tables are available.\n",
-        "Use " %+% crayon::yellow$bold("modosin_describe_table") %+%
+        "Use " %+% crayon::yellow$bold("plotDrought_describe_table") %+%
           " to get the information available on the tables.\n",
-        "Use " %+% crayon::yellow$bold("modosin_describe_var") %+%
+        "Use " %+% crayon::yellow$bold("plotDrought_describe_var") %+%
           " to get the information available on the variables.\n"
 
       )
@@ -135,30 +137,44 @@ lfcMODOSIN <- R6::R6Class(
 
 #      .) Estas funciones facilitan al usuario acceder a los datos
 #      .) Cada método tine una función
-#      .) Todas se inicializan con un OBJETO => Es modosin()
+#      .) Todas se inicializan con un OBJETO => Es plotDrought()
 #      .) CHECKS:
 #               .) Solo tienen CHECK CLASS
 #               .) Las variables seran Chequeadas por el método
 
 
-
-modosin_get_data <- function(object, table_name = "data_day") {
-  check_class_for(object, 'lfcMODOSIN')
+#'
+#'
+#' @export
+plotDrought_get_data <- function(object, table_name = "data_day") {
+  check_class_for(object, 'lfcplotDrought')
   object$get_data(table_name)
 }
 
-modosin_avail_tables <- function(object) {
-  check_class_for(object, 'lfcMODOSIN')
+
+#'
+#'
+#' @export
+plotDrought_avail_tables <- function(object) {
+  check_class_for(object, 'lfcplotDrought')
   object$avail_tables()
 }
 
-modosin_describe_table <- function(object, tables) {
-  check_class_for(object, 'lfcMODOSIN')
+
+#'
+#'
+#' @export
+plotDrought_describe_table <- function(object, tables) {
+  check_class_for(object, 'lfcplotDrought')
   object$describe_table(tables)
 }
 
-modosin_describe_var<- function(object, variables) {
-  check_class_for(object, 'lfcMODOSIN')
+
+#'
+#'
+#' @export
+plotDrought_describe_var<- function(object, variables) {
+  check_class_for(object, 'lfcplotDrought')
   object$describe_var(variables)
 }
 

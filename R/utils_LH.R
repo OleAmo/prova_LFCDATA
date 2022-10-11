@@ -1,5 +1,5 @@
 
-# ........ MODOSIN TABLE DICTIONARY .........
+# ...... PLOTDROUGHT TABLE DICTIONARY .......
 # ...........................................
 
 #        .) Tenemos solo UNA TABLA => data_day
@@ -8,7 +8,7 @@
 #              .) DAY
 
 
-modosin_table_dictionary <- function() {
+plotDrought_table_dictionary <- function() {
   c(
     day = ', every day are generated variables from MEDFATE Model.',
     data = 'Plots eco-physiological variables from NFI version 4 (2013-2016)'
@@ -44,7 +44,7 @@ modosin_table_dictionary <- function() {
 #                     .) Ordenamos la VARIABLE_NAME
 
 
-modosin_describe_table_cat = function(table, tables_dict, variables_thes){
+plotDrought_describe_table_cat = function(table, tables_dict, variables_thes){
 
     variable_names <- variables_thes %>%
         dplyr::filter(.data$var_table == table) %>%
@@ -93,7 +93,7 @@ modosin_describe_table_cat = function(table, tables_dict, variables_thes){
 
 
 
-modosin_describe_var_eng <- function(variable, variables_thes, numerical_thes) {
+plotDrought_describe_var_eng <- function(variable, variables_thes, numerical_thes) {
 
   variables_thes %>%
     dplyr::filter(.data$var_id == variable) %>%
