@@ -141,6 +141,9 @@ lfcsiteDrought <- R6::R6Class(
 #      .) CHECKS:
 #               .) Solo tienen CHECK CLASS
 #               .) Las variables seran Chequeadas por el método
+#      .) EJEMPLO de USO:
+#               .) sitedr <- lfcdata::sitedrougth()
+#               .) siteDrought_avail_tables(sitedr,'data_Day)
 
 
 #'
@@ -152,8 +155,6 @@ siteDrought_get_data <- function(object, table_name = "data_day") {
 }
 
 
-#'
-#'
 #' @export
 siteDrought_avail_tables <- function(object) {
   check_class_for(object, 'lfcsiteDrought')
@@ -178,6 +179,46 @@ siteDrought_describe_var<- function(object, variables) {
   object$describe_var(variables)
 }
 
+
+
+#' Add together two numbers
+#' @param x A number.
+#' @param y A number.
+#' @return A numeric vector.
+#' @examples
+#' add(1,1)
+#' add(10,1)
+
+add <- function(x,y){
+  x+y
+}
+
+
+#' Remove duplicates strings
+#'
+#' `str_unique()` remove duplicate values, with optional control over
+#' how duplicte is measured.
+#'
+#' `str_detect()` return a logial vector `TRUE` if `pattern` or `FALSE` if bla bla bla
+#'
+#' @param string   A character vector to return unique entries.
+#' @param ...   Other options used to control matching behaviour between
+#' duplicate strings. Passed on to [stringi::stri_opts_collator()].
+#'
+#' @returns A character vector.
+#' @seealso [unique()], [stringi::stri_unique()] witch this funcions wraps.
+#' @examples
+#' str_unique(c("a","b","c","a","a","f"))
+#'
+#' # Use ... to pass additonal arguments to stri_unique()
+#' str_unique(c("motley", "mötley", "pinguino", "pingüino"))
+#' str_unique(c("motley", "mötley", "pinguino", "pingüino"), strength = 1)
+#' @export
+
+str_unique <- function(string, ...) {
+  ...
+
+}
 
 
 
