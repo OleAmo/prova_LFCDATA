@@ -2,7 +2,7 @@
 % Please edit documentation in R/lfcSiteDrought.R
 \name{str_unique}
 \alias{str_unique}
-\title{Detect the a pattern in the same way as `SQL`'s `LIKE` operator.}
+\title{Remove duplicates strings}
 \usage{
 str_unique(string, ...)
 }
@@ -16,13 +16,11 @@ duplicate strings. Passed on to [stringi::stri_opts_collator()].}
 A character vector.
 }
 \description{
-`str_like()` follows the conventions of the SQL `LIKE` operator:
-
-* Must match the entire string.
-* `_` matches a single character (like `.`).
-* `%` matches any number of characters (like `.*`).
-* `\%` and `\_` match literal `%` and `_`.
-* The match is case insensitive by default.
+`str_unique()` remove duplicate values, with optional control over
+how duplicte is measured.
+}
+\details{
+`str_detect()` return a logial vector `TRUE` if `pattern` or `FALSE` if bla bla bla
 }
 \examples{
 str_unique(c("a","b","c","a","a","f"))
