@@ -206,7 +206,19 @@ add <- function(x,y){
 #' duplicate strings. Passed on to [stringi::stri_opts_collator()].
 #'
 #' @returns A character vector.
-#' @seealso [unique()], [stringi::stri_unique()] witch this funcions wraps.
+#' @seealso
+#' * [tibble()] constructs from individual columns.
+#' * [enframe()] converts a named vector into a two-column tibble (names and
+#'   values).
+#' * [name-repair] documents the details of name repair.
+#' @description
+#' `str_like()` follows the conventions of the SQL `LIKE` operator:
+#'
+#' * Must match the entire string.
+#' * `_` matches a single character (like `.`).
+#' * `%` matches any number of characters (like `.*`).
+#' * `\%` and `\_` match literal `%` and `_`.
+#' * The match is case insensitive by default.
 #' @examples
 #' str_unique(c("a","b","c","a","a","f"))
 #'
@@ -219,6 +231,44 @@ str_unique <- function(string, ...) {
   ...
 
 }
+
+
+
+
+#' The length of a string
+#'
+#' Technically this returns the number of "code points", in a string. One
+#' code point usually corresponds to one character, but not always. For example,
+#' an u with a umlaut might be represented as a single character or as the
+#' combination a u and an umlaut.
+#'
+#' @inheritParams str_detect
+#' @return A numeric vector giving number of characters (code points) in each
+#'    element of the character vector. Missing string have missing length.
+#' @seealso [stringi::stri_length()] which this function wraps.
+#' @examples
+#' str_length(letters)
+#' str_length(NA)
+#' str_length(factor("abc"))
+#' str_length(c("i", "like", "programming", NA))
+#' #' @export
+str_length <- function(string) {
+}
+
+# ...............  MANUAL WEB .................
+# .............................................
+
+#         .) https://r-pkgs.org/man.html#description
+#         .) M'he quedat al punt 16.3
+
+
+
+
+
+
+
+
+
 
 
 

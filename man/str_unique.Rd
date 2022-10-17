@@ -16,10 +16,18 @@ duplicate strings. Passed on to [stringi::stri_opts_collator()].}
 A character vector.
 }
 \description{
-`str_unique()` remove duplicate values, with optional control over
-how duplicte is measured.
+`str_like()` follows the conventions of the SQL `LIKE` operator:
+
+* Must match the entire string.
+* `_` matches a single character (like `.`).
+* `%` matches any number of characters (like `.*`).
+* `\%` and `\_` match literal `%` and `_`.
+* The match is case insensitive by default.
 }
 \details{
+`str_unique()` remove duplicate values, with optional control over
+how duplicte is measured.
+
 `str_detect()` return a logial vector `TRUE` if `pattern` or `FALSE` if bla bla bla
 }
 \examples{
@@ -30,5 +38,8 @@ str_unique(c("motley", "mötley", "pinguino", "pingüino"))
 str_unique(c("motley", "mötley", "pinguino", "pingüino"), strength = 1)
 }
 \seealso{
-[unique()], [stringi::stri_unique()] witch this funcions wraps.
+* [tibble()] constructs from individual columns.
+* [enframe()] converts a named vector into a two-column tibble (names and
+  values).
+* [name-repair] documents the details of name repair.
 }
