@@ -247,19 +247,21 @@ str_unique <- function(string, ...) {
 #'    element of the character vector. Missing string have missing length.
 #' @seealso [stringi::stri_length()] which this function wraps.
 #' @examples
-#' str_length(letters)
+#' str_length("letters")
 #' str_length(NA)
 #' str_length(factor("abc"))
 #' str_length(c("i", "like", "programming", NA))
-#' #' @export
+
+#' @export
 str_length <- function(string) {
+
 }
 
 # ...............  MANUAL WEB .................
 # .............................................
 
 #         .) https://r-pkgs.org/man.html#description
-#         .) M'he quedat al punt 16.3
+#         .) M'he quedat al punt 16.6.3
 
 
 

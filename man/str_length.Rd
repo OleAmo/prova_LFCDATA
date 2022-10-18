@@ -21,7 +21,6 @@ str_length(letters)
 str_length(NA)
 str_length(factor("abc"))
 str_length(c("i", "like", "programming", NA))
-#' @export
 }
 \seealso{
 [stringi::stri_length()] which this function wraps.
