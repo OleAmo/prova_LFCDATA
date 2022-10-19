@@ -98,7 +98,7 @@ lfcsiteDrought <- R6::R6Class(
       check_if_in_for(tables, self$avail_tables())
 
       tables_dict <- siteDrought_table_dictionary()
-      variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
+      variables_thes <- suppressMessages(super$get_data('variables_thesaurus_sitedr'))
 
       tables %>%
         purrr::map(
@@ -252,6 +252,35 @@ siteDrought_avail_tables <- function(object) {
   object$avail_tables()
 }
 
+#'@title Print info abuout the tables present in the siteDrought database
+#'
+#'@description \code{siteDrought_describe_table} is a wrapper for the \code{$describe_table} method of
+#'    \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}
+#'
+#'@usage siteDrought_describe_table(object, tables)
+#'
+#'@param object \code{lfcsiteDrought} object, as created by \code{\link{siteDrought}}
+#'@param tables character vector with the names of the tables to describe
+#'
+#'@return Description is printed in the console, nothing is returned
+#'
+#'@seealso Other siteDrought functions:
+#'    \code{\link{siteDrought_get_data} (),
+#'    \code{\link{siteDrought_avail_tables}} (),
+#'    \code{\link{siteDrought_describe_var}} (),
+#'    \code{\link{siteDrought}} (),
+#'
+#'@examples
+#'
+#'if(interactive()){
+#'
+#'    siteDroughtdb <- lfcdata::siteDrought()
+#'    lfcdata::siteDrought_describe_table(siteDroughtdb , 'data_day')
+#'
+#'    # siteDrought is an R6 object, so the previus example is the same as:
+#'    siteDroughtdb$describe_table('data_day')
+#'
+#'}
 #'
 #'
 #' @export

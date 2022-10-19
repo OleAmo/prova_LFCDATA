@@ -11,7 +11,8 @@
 siteDrought_table_dictionary <- function() {
   c(
     day = ', every day are generated variables from MEDFATE Model.',
-    data = 'Plots eco-physiological variables from NFI version 4 (2013-2016)'
+    data = 'Plots eco-physiological variables from NFI version 4 (2013-2016) of Catalunya and
+            Parque Nacional Ordesa y Monte Perdido also plots from Scrubland Project '
   )
 }
 
@@ -33,7 +34,7 @@ siteDrought_table_dictionary <- function() {
 #              .) O sea, para DESCRIVIR la TABLA usamos la palabras de la misma Tabla
 #              .) Y el comparar-lo con un diccionario para describir-lo
 
-#              .) So podría hacer con una CONSULTA SQL a una SUB TABLA
+#              .) Lo podría hacer con una CONSULTA SQL a una SUB TABLA
 #              .) Pero esto implicaría conectar con la BBDD y esto tardaría mas tiempo
 
 #        .) CAT:
