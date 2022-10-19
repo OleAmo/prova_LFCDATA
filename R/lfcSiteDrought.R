@@ -1,6 +1,29 @@
 #'
+#'@description \code{siteDrought()} creates and object to access the siteDrought database
 #'
-#' @export
+#'@title lfcsiteDrought Class
+#'
+#'@returns An \code{siteDrought} class object (inherits from
+#'    \code{\link[R6]{R6Class}}) with methods to access the data.
+#'    See Methods section.
+#'
+#'@section Methods:
+#'    \code{lfcsiteDrought} objects has the following public methods.
+#'    \itemize{
+#'        \item {\code{$get_data} Retrieve and siteDrought database tables.
+#'               See \code{\link{siteDrought_get_data}} for more details.}
+#'
+#'        \item {\code{$avail_tables} bla,bla,bla}
+#'
+#'        \item {\code{$describe_table} bla,bla,bla}
+#'
+#'        \item {\code{$describe_var} bla,bla,bla}
+#'
+#'        \item {\code{$print} bla,bla,bla}
+#'
+#'    }
+#'
+#'@export
 siteDrought <- function() {
   lfcsiteDrought$new()
 }
@@ -146,8 +169,42 @@ lfcsiteDrought <- R6::R6Class(
 #               .) siteDrought_avail_tables(sitedr,'data_Day)
 
 
+#'@title Access to the tables in the siteDrought database
 #'
+#'@description \code{siteDrought_get_data} is a wrapper for the \code{$get_data} method
+#'    of \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}.
 #'
+#'@usage siteDrought_get_data (object, table_name)
+#'
+#'@param object \code{lfcsiteDrought} object, as created by \code{\link{siteDrought}}
+#'@param table_name character vector of lenght 1 indicating the requested table name
+#'
+#'@details Connection to database can be slow. Tables retrieved from the db are stored in a temporary cache inside
+#'    the lfcsiteDrought object created by \code{\link{siteDrought}}
+#'
+#'@return A tbl object, sf type
+#'
+#'@seealso Other siteDrought functions:
+#'\code{\link{siteDrought_avail_tables}} (),
+#'\code{\link{siteDrought_describe_table}} (),
+#'\code{\link{siteDrought_describe_var}} ()
+#'
+#'@examples
+#'if (interactive()) {
+#'
+#'   siteDroughtdb <- lfcdata::siteDrought()
+#'
+#'   # sf tibble
+#'   lfcdata::siteDrought_get_data(siteDroughtdb,'data_day')
+
+#'   # we can uses pipes
+#'   siteDroughtdb %>%
+#'      lfcdata::siteDrought_get_data('data_day')
+#'
+#'   # siteDroughtdb is an R6 object, so the previous examples are the same as:
+#'   siteDroughtdb$get_data('data_day')
+#'
+#'}
 #' @export
 siteDrought_get_data <- function(object, table_name = "data_day") {
   check_class_for(object, 'lfcsiteDrought')
@@ -160,7 +217,6 @@ siteDrought_avail_tables <- function(object) {
   check_class_for(object, 'lfcsiteDrought')
   object$avail_tables()
 }
-
 
 #'
 #'
@@ -181,81 +237,7 @@ siteDrought_describe_var<- function(object, variables) {
 
 
 
-#' Add together two numbers
-#' @param x A number.
-#' @param y A number.
-#' @return A numeric vector.
-#' @examples
-#' add(1,1)
-#' add(10,1)
 
-add <- function(x,y){
-  x+y
-}
-
-
-#' Remove duplicates strings
-#'
-#' `str_unique()` remove duplicate values, with optional control over
-#' how duplicte is measured.
-#'
-#' `str_detect()` return a logial vector `TRUE` if `pattern` or `FALSE` if bla bla bla
-#'
-#' @param string   A character vector to return unique entries.
-#' @param ...   Other options used to control matching behaviour between
-#' duplicate strings. Passed on to [stringi::stri_opts_collator()].
-#'
-#' @returns A character vector.
-#' @seealso
-#' * [tibble()] constructs from individual columns.
-#' * [enframe()] converts a named vector into a two-column tibble (names and
-#'   values).
-#' * [name-repair] documents the details of name repair.
-#' @description
-#' `str_like()` follows the conventions of the SQL `LIKE` operator:
-#'
-#' * Must match the entire string.
-#' * `_` matches a single character (like `.`).
-#' * `%` matches any number of characters (like `.*`).
-#' * `\%` and `\_` match literal `%` and `_`.
-#' * The match is case insensitive by default.
-#' @examples
-#' str_unique(c("a","b","c","a","a","f"))
-#'
-#' # Use ... to pass additonal arguments to stri_unique()
-#' str_unique(c("motley", "mötley", "pinguino", "pingüino"))
-#' str_unique(c("motley", "mötley", "pinguino", "pingüino"), strength = 1)
-#' @export
-
-str_unique <- function(string, ...) {
-  ...
-
-}
-
-
-
-
-#' The length of a string
-#'
-#' Technically this returns the number of "code points", in a string. One
-#' code point usually corresponds to one character, but not always. For example,
-#' an u with a umlaut might be represented as a single character or as the
-#' combination a u and an umlaut.
-#'
-#' @inheritParams str_detect
-#' @return A numeric vector giving number of characters (code points) in each
-#'    element of the character vector. Missing string have missing length.
-#' @seealso [stringi::stri_length()] which this function wraps.
-#' @examples
-#' str_length("letters")
-#' str_length(NA)
-#' str_length(factor("abc"))
-#' str_length(c("i", "like", "programming", NA))
-
-#' @export
-str_length <- function(string) {
-
-}
 
 # ...............  MANUAL WEB .................
 # .............................................
