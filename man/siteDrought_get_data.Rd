@@ -40,7 +40,8 @@ if (interactive()) {
 }
 \seealso{
 Other siteDrought functions:
-\code{\link{siteDrought_avail_tables}} (),
-\code{\link{siteDrought_describe_table}} (),
-\code{\link{siteDrought_describe_var}} ()
+   \code{\link{siteDrought_avail_tables}} (),
+   \code{\link{siteDrought_describe_table}} (),
+   \code{\link{siteDrought_describe_var}} (),
+   \code{\link{siteDrought}} ()
 }

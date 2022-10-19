@@ -169,6 +169,10 @@ lfcsiteDrought <- R6::R6Class(
 #               .) siteDrought_avail_tables(sitedr,'data_Day)
 
 
+
+
+
+
 #'@title Access to the tables in the siteDrought database
 #'
 #'@description \code{siteDrought_get_data} is a wrapper for the \code{$get_data} method
@@ -185,9 +189,10 @@ lfcsiteDrought <- R6::R6Class(
 #'@return A tbl object, sf type
 #'
 #'@seealso Other siteDrought functions:
-#'\code{\link{siteDrought_avail_tables}} (),
-#'\code{\link{siteDrought_describe_table}} (),
-#'\code{\link{siteDrought_describe_var}} ()
+#'    \code{\link{siteDrought_avail_tables}} (),
+#'    \code{\link{siteDrought_describe_table}} (),
+#'    \code{\link{siteDrought_describe_var}} (),
+#'    \code{\link{siteDrought}} ()
 #'
 #'@examples
 #'if (interactive()) {
@@ -212,6 +217,35 @@ siteDrought_get_data <- function(object, table_name = "data_day") {
 }
 
 
+#'@title Get the available tables in siteDrought database
+#'
+#'@description \code{siteDrought_avail_tables} is a wrapper for the \code{$avail_tables}
+#'    method of \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}.
+#'
+#'@usage siteDrought_avail_tables
+#'
+#'@param object \code{lfcsiteDrought} object, as created by \code{\link{siteDrought}}
+#'
+#'@return A character vector with the table names
+#'
+#'@seealso Other siteDrought functions:
+#'    \code{\link{siteDrought_get_data}} (),
+#'    \code{\link{siteDrought_describe_table}} (),
+#'    \code{\link{siteDrought_describe_var}} (),
+#'    \code{\link{siteDrought}} ()
+#'
+#'@examples
+#'
+#'if (interactive()) {
+#'
+#'   siteDroughtdb <- lfcdata::siteDrought()
+#'   lfcdata::siteDrought_avail_tables(siteDroughtdb)
+#'
+#'   # siteDroughtdb is an R6 object, so the previous examples are the same as:
+#'   siteDroughtdb$avail_tables()
+#'
+#'}
+#'
 #' @export
 siteDrought_avail_tables <- function(object) {
   check_class_for(object, 'lfcsiteDrought')
@@ -226,11 +260,10 @@ siteDrought_describe_table <- function(object, tables) {
   object$describe_table(tables)
 }
 
-
 #'
 #'
 #' @export
-siteDrought_describe_var<- function(object, variables) {
+siteDrought_describe_var <- function(object, variables) {
   check_class_for(object, 'lfcsiteDrought')
   object$describe_var(variables)
 }
