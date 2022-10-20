@@ -280,15 +280,11 @@ siteDrought_avail_tables <- function(object) {
 #'
 #'@examples
 #'
-#'if(interactive()){
-#'
 #'    siteDroughtdb <- lfcdata::siteDrought()
 #'    lfcdata::siteDrought_describe_table(siteDroughtdb , 'data_day')
 #'
 #'    # siteDrought is an R6 object, so the previus example is the same as:
 #'    siteDroughtdb$describe_table('data_day')
-#'
-#'}
 #'
 #'
 #' @export
