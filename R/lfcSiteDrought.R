@@ -10,16 +10,16 @@
 #'@section Methods:
 #'    \code{lfcsiteDrought} objects has the following public methods.
 #'    \itemize{
-#'        \item {\code{$get_data} Retrieve and siteDrought database tables.
+#'        \item {\code{$get_data}: Retrieve and siteDrought database tables.
 #'               See \code{\link{siteDrought_get_data}} for more details.}
 #'
-#'        \item {\code{$avail_tables} bla,bla,bla}
+#'        \item {\code{$avail_tables}: Retrun a character vector with the names
+#'              of the available tables in the database. See \code{\link{siteDrought_avail_tables}}
+#'              for more details.} }
 #'
-#'        \item {\code{$describe_table} bla,bla,bla}
+#'        \item {\code{$describe_table}: bla,bla,bla}
 #'
-#'        \item {\code{$describe_var} bla,bla,bla}
-#'
-#'        \item {\code{$print} bla,bla,bla}
+#'        \item {\code{$describe_var}: bla,bla,bla}
 #'
 #'    }
 #'
@@ -263,7 +263,7 @@ siteDrought_avail_tables <- function(object) {
 #'@title Print info abuout the tables present in the siteDrought database
 #'
 #'@description \code{siteDrought_describe_table} is a wrapper for the \code{$describe_table} method of
-#'    \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}
+#'    \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}.
 #'
 #'@usage siteDrought_describe_table(object, tables)
 #'
@@ -280,12 +280,15 @@ siteDrought_avail_tables <- function(object) {
 #'
 #'@examples
 #'
+#'if (interactive()) {
+#'
 #'    siteDroughtdb <- lfcdata::siteDrought()
 #'    lfcdata::siteDrought_describe_table(siteDroughtdb , 'data_day')
 #'
 #'    # siteDrought is an R6 object, so the previus example is the same as:
 #'    siteDroughtdb$describe_table('data_day')
 #'
+#'}
 #'
 #' @export
 siteDrought_describe_table <- function(object, tables) {
@@ -293,7 +296,37 @@ siteDrought_describe_table <- function(object, tables) {
   object$describe_table(tables)
 }
 
+#'@title Pint info about the variables present in the siteDrought databases
 #'
+#'@description \code{siteDrought_describe_var} is a wrapper for the \code{$describe_var} method of
+#'    \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}.
+#'
+#'@usage siteDrought_describe_var(object, variables)
+#'
+#'@param object \code{lfcsiteDrought} object, as characted by \code{\link{siteDrought}}
+#'@param variables character vector with the names of the variables to describe
+#'
+#'@return Description is printed in the console, nothing is returned
+#'
+#'@seealso Other siteDrought functions:
+#'    \code{\link{siteDrought_get_data}} (),
+#'    \code{\link{siteDrought_avail_tables}} (),
+#'    \code{\link{siteDrought_describe_table}} (),
+#'    \code{\link{siteDrought}} ()
+#'
+#'@examples
+#'
+#'if (interactive()) {
+#'
+#'    siteDroughtdb <- lfcdata::siteDrought()
+#'    lfcdata::siteDrought_describe_var(siteDroughtdb , 'LFMC_q')
+#'    lfcdata::siteDrought_describe_var(siteDroughtdb , c('DFMC','SFP'))
+#'
+#'    # siteDrought is an R6 object, so the previous examples is the same as:
+#'    siteDroughtdb$describe_var('LFMC_q')
+#'    siteDroughtdb$describe_var(c('DFMC','SFP'))
+#'
+#'}
 #'
 #' @export
 siteDrought_describe_var <- function(object, variables) {

@@ -16,9 +16,11 @@ Description is printed in the console, nothing is returned
 }
 \description{
 \code{siteDrought_describe_table} is a wrapper for the \code{$describe_table} method of
-   \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}
+   \code{lfcsiteDrought} objects. See also \code{\link{siteDrought}}.
 }
 \examples{
+
+if (interactive()) {
 
    siteDroughtdb <- lfcdata::siteDrought()
    lfcdata::siteDrought_describe_table(siteDroughtdb , 'data_day')
@@ -26,6 +28,7 @@ Description is printed in the console, nothing is returned
    # siteDrought is an R6 object, so the previus example is the same as:
    siteDroughtdb$describe_table('data_day')
 
+}
 
 }
 \seealso{
