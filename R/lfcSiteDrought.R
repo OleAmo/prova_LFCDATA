@@ -112,25 +112,33 @@ lfcsiteDrought <- R6::R6Class(
     # .................. DESCRIBE VAR ..................
     # ..................................................
 
-    #      .) Para obtener VARIABLES THESAURUS / NUMERICAL
-    #      .) Usamos SUPER$GET_DATA
-    #      .) Ya que queremos descargar de la BBDD dos tablas sin GEOMETRIA
+    #      .) Obtenemos VARIABLES de la tabla de la BBDD
+    #      .) Usamos = SUPER$GET_DATA(VARIABLES THESAURUS SITEDR)
+
+    #      .) Aplicamos función = SITEDROUGHT_describe_var_eng
+    #      .) Está en el archivo UTILS_LH.R
 
     describe_var = function(variables) {
       check_args_for(character = list(variables = variables))
 
-      variables_thes <- suppressMessages(super$get_data('variables_thesaurus'))
-      numerical_thes <- suppressMessages(super$get_data('variables_numerical'))
+      variables_thes <- suppressMessages(super$get_data('variables_thesaurus_sitedr'))
 
       variables %>%
         purrr::map(
           siteDrought_describe_var_eng,
-          variables_thes = variables_thes, numerical_thes = numerical_thes
+          variables_thes = variables_thes
         )
 
       invisible(self)
 
     },
+
+    # .................... PRINT .......................
+    # ..................................................
+
+    #      .) Función solo descriptiva
+    #      .) Anuncia y describe las principales funciones
+
     print = function(...) {
       cat(
         " Access to Laboratori Forestal (CREAF).\n",
