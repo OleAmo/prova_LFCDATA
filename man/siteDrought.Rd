@@ -18,17 +18,34 @@ An \code{siteDrought} class object (inherits from
 
    \code{lfcsiteDrought} objects has the following public methods.
    \itemize{
-       \item {\code{$get_data} Retrieve and siteDrought database tables.
+       \item {\code{$get_data}: Retrieve and siteDrought database tables.
               See \code{\link{siteDrought_get_data}} for more details.}
 
-       \item {\code{$avail_tables} bla,bla,bla}
+       \item {\code{$avail_tables}: Retrun a character vector with the names
+             of the available tables in the database.
+             See \code{\link{siteDrought_avail_tables}} for more details.}
 
-       \item {\code{$describe_table} bla,bla,bla}
+       \item {\code{$describe_table}: Print the information available about the provided table-
+             See \code{\link{siteDroughtdescribe_table}} for more details.}
 
-       \item {\code{$describe_var} bla,bla,bla}
-
-       \item {\code{$print} bla,bla,bla}
-
+       \item {\code{$describe_var}: Print information available about the provided variable.
+             See \code{\link{siteDroughtdescribe_var}} for more details.}
    }
 }
 
+\examples{
+
+if (interactive()) {
+
+  siteDroughtdb <- lfcdata::siteDrought()
+  siteDroughtdb
+}
+
+}
+\seealso{
+Other siteDrought functions:
+   \code{\link{siteDrought_get_data}} (),
+   \code{\link{siteDrought_avail_tables}} (),
+   \code{\link{siteDrought_describe_table}} (),
+   \code{\link{siteDrought_describe_var}} ()
+}
