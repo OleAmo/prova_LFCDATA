@@ -7,6 +7,7 @@ test_that("class object creation works", {
   expect_true(rlang::is_function(nfi()$describe_table))
 })
 
+
 # nfidb to avoid calling the db so often
 nfidb <- nfi()
 
