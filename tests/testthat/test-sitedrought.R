@@ -46,28 +46,11 @@ test_that("get_data method works", {
                "Argument table_name is not character")
   expect_error(sitedrdb$get_data(21),
                "Argument table_name is not character")
+  expect_error(sitedrdb$get_data('random_table'),
+               "no existe la relación «random_table»")
 
   }
 )
-
-
-
-
-# %%%%%%%%%%%%%%%%%   AKI MHE KEDAAAAT  %%%%%%%%%%%%%%%%%%
-
-
-# .............. INFO TESTING ..............
-# ..........................................
-
-#    .) https://r-pkgs.org/testing-basics.html
-
-
-
-
-
-
-
-
 
 
 # .......... AVAIL TABLE ............
@@ -75,15 +58,23 @@ test_that("get_data method works", {
 
 #       .) Test Avail Table Method
 
-# test_that("avail_table method works", {
-#   skip_on_cran()
-#   skip_on_travis()
-#
-#   expect_is(sitedrdb$avail_tables(), c('character'))
-#   expect_type(sitedrdb$avail_tables(),'character')
-#   expect_true("variables_thesaurus_sitedr" %in% sitedrdb$avail_tables())
-#   }
-# )
+test_that("avail_table method works", {
+  skip_on_cran()
+  skip_on_travis()
+
+  expect_is(sitedrdb$avail_tables(), c('character'))
+  expect_type(sitedrdb$avail_tables(),'character')
+  expect_true("data_day" %in% sitedrdb$avail_tables())
+
+  # errors
+  expect_error(sitedrdb$avail_tables(FALSE),
+               "unused argument")
+  expect_error(sitedrdb$avail_tables(21),
+               "unused argument")
+  expect_error(sitedrdb$avail_tables('random_table'),
+               "unused argument")
+  }
+)
 
 # ......... DESCRIBE TABLE ..........
 # ...................................
@@ -133,5 +124,14 @@ rm(sitedrdb)
 
 
 
+
+
+# %%%%%%%%%%%%%%%%%   AKI MHE KEDAAAAT  %%%%%%%%%%%%%%%%%%
+
+
+# .............. INFO TESTING ..............
+# ..........................................
+
+#    .) https://r-pkgs.org/testing-basics.html
 
 
