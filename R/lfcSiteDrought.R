@@ -46,7 +46,7 @@ siteDrought <- function() {
 lfcsiteDrought <- R6::R6Class(
 
   classname = "lfcsiteDrought",
-  inherit = lfcObject_LH,
+  inherit = lfcObject_SiteDR,
   cloneable = FALSE,
 
   public = list(

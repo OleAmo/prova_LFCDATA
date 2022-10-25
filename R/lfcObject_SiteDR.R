@@ -1,6 +1,6 @@
-lfcObject_LH <- R6::R6Class(
+lfcObject_SiteDR <- R6::R6Class(
   # specs
-  classname = 'lfcObject_LH',
+  classname = 'lfcObject_SiteDR',
   # public methods and values
   public = list(
     # initialize method
