@@ -77,8 +77,62 @@ test_that("avail_table method works", {
 )
 
 
+# ......... DESCRIBE TABLE ..........
+# ...................................
+
+#       .) Test Describe Table Method
+
+test_that("describe_table method works", {
+  skip_on_cran()
+  skip_on_travis()
+
+  expect_is(sitedrdb$describe_table("data_day"), c('lfcsiteDrought'))
+  expect_output(sitedrdb$describe_table("data_day"))
+
+  # errors
+  expect_error(sitedrdb$describe_table(c('data_day','random_table')),
+               "not found")
+  expect_error(sitedrdb$describe_table('random_table'),
+               'random_table not found')
+  expect_error(sitedrdb$describe_table(NA),
+               'Argument tables is not character')
+  expect_error(sitedrdb$describe_table(25),
+               'Argument tables is not character')
+  expect_error(sitedrdb$describe_table(),
+               "el argumento \"tables\" está ausente, sin valor por omisión")
+
+  }
+)
 
 
+# ........ DESCRIBE VARIABLE ........
+# ...................................
+
+#       .) Test Describe Table Method
+
+
+test_that("describe_var method works", {
+  skip_on_cran()
+  skip_on_travis()
+
+  expect_is(sitedrdb$describe_var("REW"),c('lfcsiteDrought'))
+  expect_output(sitedrdb$describe_var("Precipitation"))
+  expect_output(sitedrdb$describe_var(c("REW","Precipitation")))
+
+  # errors
+  expect_error(sitedrdb$describe_var('random'),
+               "not found")
+  expect_error(sitedrdb$describe_var(c("REW","random")),
+               "not found")
+  expect_error(sitedrdb$describe_var(NA),
+               "Argument variables is not character")
+    expect_error(sitedrdb$describe_var(21),
+                 Message = "Argument variables is not character")
+    expect_error(sitedrdb$describe_var(),
+                 Message = 'argument "variables" is missing')
+})
+
+rm(sitedrdb)
 
 
 # %%%%%%%%%%%%%%%%%   AKI MHE KEDAAAAT  %%%%%%%%%%%%%%%%%%
@@ -89,56 +143,6 @@ test_that("avail_table method works", {
 # ..........................................
 
 #    .) https://r-pkgs.org/testing-basics.html
-
-
-
-
-
-# ......... DESCRIBE TABLE ..........
-# ...................................
-
-#       .) Test Describe Table Method
-
-# test_that("describe_table method works", {
-#   skip_on_cran()
-#   skip_on_travis()
-#
-#   expect_is(sitedrdb$describe_table("prova_plot_nfi2_genus"), c('lfcsitedrdbught'))
-#   expect_output(sitedrdb$describe_table("prova_plot_nfi2_genus"))
-#   expect_output(sitedrdb$describe_table(c("prova_plot_nfi2_genus","prova_plots_dynamic_nfi2")))
-#   expect_error(sitedrdb$describe_table(c("prova_plot_nfi2_genus", "prova_ejemplo")), 'not found')
-#   expect_error(sitedrdb$describe_table('base_datos'), 'base_datos not found')
-#   expect_error(sitedrdb$describe_table(NA), 'Argument tables is not character')
-#   expect_error(sitedrdb$describe_table(25), 'Argument tables is not character')
-#   expect_error(sitedrdb$describe_table(), "el argumento \"tables\" está ausente, sin valor por omisión")
-#   }
-# )
-
-
-# ........ DESCRIBE VARIABLE ........
-# ...................................
-
-#       .) Test Describe Table Method
-
-
-# test_that("describe_var method works", {
-#   skip_on_cran()
-#   skip_on_travis()
-#
-#   expect_is(sitedrdb$describe_var("REW"),c('lfcsitedrdbught'))
-#   expect_output(sitedrdb$describe_var("LAI"))
-#   expect_output(sitedrdb$describe_var(c("REW","Precipitaion","LAI")))
-#
-#   # errors
-#     expect_error(sitedrdb$describe_var(NA),
-#                  Message = "Argument variables is not character")
-#     expect_error(sitedrdb$describe_var(21),
-#                  Message = "Argument variables is not character")
-#     expect_error(sitedrdb$describe_var(),
-#                  Message = 'argument "variables" is missing')
-# })
-
-rm(sitedrdb)
 
 
 

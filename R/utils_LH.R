@@ -94,7 +94,10 @@ siteDrought_describe_table_cat = function(table, tables_dict, variables_thes){
 siteDrought_describe_var_eng <- function(variable, variables_thes) {
 
   variables_thes %>%
-    dplyr::filter(.data$var_id == variable) %>%
+    dplyr::filter(.data$var_id == variable) %>% {
+      check_filter_for(., glue::glue("{variable} variable not found"))
+      .
+    }  %>%
     dplyr::group_walk(
       ~ cat(
         "\n",
