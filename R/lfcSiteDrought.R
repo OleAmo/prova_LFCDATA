@@ -61,14 +61,14 @@ lfcsiteDrought <- R6::R6Class(
     #             .) CACHE siempre (SPATIAL = TRUE)
     #             .) Usamos el SF::ST_READ  (Se conecta a al BBDD y devuelve SF con geometría)
     #             .) NO Usamos FILTER para seleccionar UNA FECHA
-    #                       .) Nos descargarmos TODA la TABLA
+    #                       .) Nos descargamos TODA la TABLA
     #                       .) Con todas las FECHAS y datos
-    #                       .) Pesarà poco para R y despues en la App ya la filtraremos (fecha,variable,...)
+    #                       .) Pesará poco para R y después en la App ya la filtraremos (fecha,variable,...)
 
     #      .) Tablas por DEFECTO
     #                       .) Usamos (table_name = "data_day") para indicar que el defecto es "data_day"
     #                       .) Así => get_data() lo hace en f(x) de la tabla "data_day"
-    #                       .) Y si queremos otra tabla usamos => get_data("municipios")
+    #                       .) Y si queremos otra tabla usamos => get_data("otra_tabla")
 
 
     get_data = function(table_name = "data_day") {
@@ -91,7 +91,7 @@ lfcsiteDrought <- R6::R6Class(
     # .................. AVAIL TABLES ..................
     # ..................................................
 
-    #      .) El usuario SOLO puede acceder a la tabla DATA_dAY
+    #      .) El usuario SOLO puede acceder a la tabla DATA_DAY
     #      .) El resto de tablas de la BBDD no son accesibles
 
 
@@ -105,6 +105,7 @@ lfcsiteDrought <- R6::R6Class(
     #      .) Para obtener VARIABLES THESAURUS
     #      .) Usamos SUPER$GET_DATA
     #      .) Ya que queremos descargar de la BBDD una tabla sin GEOMETRIA
+    #      .) Usaremos una tabla Thesaurus especial para el siteDrought
 
 
     describe_table = function(tables){
@@ -131,7 +132,7 @@ lfcsiteDrought <- R6::R6Class(
     #      .) Usamos = SUPER$GET_DATA(VARIABLES THESAURUS SITEDR)
 
     #      .) Aplicamos función = SITEDROUGHT_describe_var_eng
-    #      .) Está en el archivo UTILS_LH.R
+    #      .) Está en el archivo UTILS_SieteDR.R
 
     describe_var = function(variables) {
       check_args_for(character = list(variables = variables))
@@ -178,22 +179,18 @@ lfcsiteDrought <- R6::R6Class(
   )
 )
 
-# ............... FUNCIONES .....................
+# ........... FUNCIONES de METODOS ..............
 # ...............................................
 
-#      .) Estas funciones facilitan al usuario acceder a los datos
-#      .) Cada método tine una función
+#      .) Estas funciones facilitan al usuario acceder a los métodos
+#      .) Cada método tiene una función
 #      .) Todas se inicializan con un OBJETO => Es siteDrought()
 #      .) CHECKS:
 #               .) Solo tienen CHECK CLASS
-#               .) Las variables seran Chequeadas por el método
+#               .) Las variables serán Chequeadas por el método
 #      .) EJEMPLO de USO:
 #               .) sitedr <- lfcdata::sitedrougth()
-#               .) siteDrought_avail_tables(sitedr,'data_Day)
-
-
-
-
+#               .) siteDrought_avail_tables(sitedr,'data_day')
 
 
 #'@title Access to the tables in the siteDrought database
@@ -349,19 +346,6 @@ siteDrought_describe_var <- function(object, variables) {
   check_class_for(object, 'lfcsiteDrought')
   object$describe_var(variables)
 }
-
-
-
-
-
-# ...............  MANUAL WEB .................
-# .............................................
-
-#         .) https://r-pkgs.org/man.html#description
-#         .) M'he quedat al punt 16.6.3
-
-
-
 
 
 
