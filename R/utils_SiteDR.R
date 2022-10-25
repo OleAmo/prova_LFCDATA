@@ -3,7 +3,7 @@
 # ...........................................
 
 #        .) Tenemos solo UNA TABLA => data_day
-#        .) Por lo tanto el diccionario solo saldrà
+#        .) El diccionario es :
 #              .) DATA
 #              .) DAY
 
