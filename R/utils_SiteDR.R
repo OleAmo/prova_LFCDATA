@@ -11,8 +11,9 @@
 siteDrought_table_dictionary <- function() {
   c(
     day = ', every day are generated variables from MEDFATE Model.',
-    data = 'Plots eco-physiological variables from NFI version 4 (2013-2016) of Catalunya and
-            Parque Nacional Ordesa y Monte Perdido also plots from Scrubland Project '
+    data = 'Plots eco-physiological variables from NFI version 4 (2013-2016) of Catalunya, Scrub monitoring plots (MatoSeg project, CTFC),
+    permanent forest plots of the Aigüestortes and Estany de Sant Maurici National Park and
+    Plots of the National Forest Inventory (IFN3) of the Ordesa y Monteperdido National Park'
   )
 }
 
